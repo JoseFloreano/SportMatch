@@ -1,0 +1,1337 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SportMatch — Mockup de App</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --volt: #C8FF00;
+    --volt-dark: #9DCA00;
+    --ink: #0E1117;
+    --ink-mid: #2A2F3A;
+    --slate: #4A5260;
+    --mist: #EEF0F4;
+    --white: #FFFFFF;
+    --teal: #00B4A0;
+    --teal-light: #E0F7F5;
+    --red: #E8393A;
+    --red-light: #FEF0F0;
+    --amber: #F5A623;
+    --amber-light: #FEF6E7;
+    --green: #27AE60;
+    --green-light: #E8F8EE;
+    --purple: #7C3AED;
+    --purple-light: #F0EAFF;
+    --border: #DDE1E8;
+    --radius: 12px;
+    --radius-lg: 20px;
+    --radius-xl: 28px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Barlow', sans-serif;
+    background: #F4F5F7;
+    color: var(--ink);
+    min-height: 100vh;
+  }
+
+  /* PAGE HEADER */
+  .page-header {
+    background: var(--ink);
+    padding: 40px 48px 36px;
+    position: relative; overflow: hidden;
+  }
+  .page-header::before {
+    content: '';
+    position: absolute; top: -80px; right: -80px;
+    width: 300px; height: 300px; border-radius: 50%;
+    background: var(--volt); opacity: 0.06;
+  }
+  .ph-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--volt); margin-bottom: 10px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .ph-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--volt); display: inline-block; }
+  .page-header h1 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 38px; font-weight: 800;
+    text-transform: uppercase; color: white;
+    line-height: 1.05; margin-bottom: 10px;
+  }
+  .page-header h1 em { color: var(--volt); font-style: normal; }
+  .page-header p { font-size: 14px; color: rgba(255,255,255,0.5); max-width: 520px; }
+
+  /* SCREEN LABEL */
+  .screen-block { margin-bottom: 64px; }
+  .screen-label {
+    display: flex; align-items: center; gap: 12px;
+    padding: 32px 48px 20px;
+  }
+  .sl-num {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    background: var(--ink); color: var(--volt);
+    padding: 3px 10px; border-radius: 4px;
+  }
+  .sl-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 20px; font-weight: 700;
+    text-transform: uppercase; color: var(--ink);
+  }
+  .sl-line { flex: 1; height: 1px; background: var(--border); }
+
+  /* PHONE FRAME */
+  .phone-stage {
+    display: flex; gap: 40px;
+    align-items: flex-start;
+    padding: 0 48px;
+    flex-wrap: wrap;
+  }
+
+  .phone-wrap {
+    flex-shrink: 0;
+    position: relative;
+  }
+
+  .phone {
+    width: 320px;
+    background: var(--ink);
+    border-radius: 40px;
+    padding: 12px;
+    box-shadow: 0 24px 60px rgba(14,17,23,0.22), 0 4px 16px rgba(14,17,23,0.12);
+    position: relative;
+  }
+
+  .phone-notch {
+    width: 90px; height: 26px;
+    background: var(--ink);
+    border-radius: 0 0 18px 18px;
+    margin: 0 auto 2px;
+    display: flex; align-items: center; justify-content: center;
+    position: relative; z-index: 10;
+  }
+  .phone-notch-inner { width: 60px; height: 5px; background: #1E2330; border-radius: 3px; }
+
+  .phone-screen {
+    background: white;
+    border-radius: 30px;
+    overflow: hidden;
+    min-height: 620px;
+    position: relative;
+  }
+
+  /* STATUS BAR */
+  .status-bar {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 10px 20px 0;
+    font-size: 11px; font-weight: 600; color: var(--ink);
+  }
+  .status-right { display: flex; gap: 6px; align-items: center; }
+  .sig { display: flex; gap: 2px; align-items: flex-end; }
+  .sig span { width: 3px; background: var(--ink); border-radius: 1px; }
+
+  /* NAV BAR */
+  .app-nav {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 10px 20px 8px;
+  }
+  .app-logo {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 20px; font-weight: 800;
+    text-transform: uppercase; color: var(--ink);
+    letter-spacing: -0.02em;
+  }
+  .app-logo span { color: var(--volt-dark); }
+  .nav-icons { display: flex; gap: 14px; align-items: center; }
+  .nav-icon {
+    width: 34px; height: 34px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--mist); font-size: 15px; cursor: pointer;
+  }
+  .nav-icon.active { background: var(--ink); }
+  .nav-avatar {
+    width: 34px; height: 34px; border-radius: 50%;
+    background: var(--teal);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700; color: white;
+  }
+
+  /* MAP AREA */
+  .map-area {
+    position: relative;
+    height: 320px;
+    background: #E8EDF2;
+    overflow: hidden;
+  }
+
+  /* Map grid pattern */
+  .map-area::before {
+    content: '';
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.6) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.6) 1px, transparent 1px);
+    background-size: 36px 36px;
+  }
+
+  /* Streets */
+  .street-h {
+    position: absolute; left: 0; right: 0;
+    height: 10px; background: white;
+    opacity: 0.85;
+  }
+  .street-v {
+    position: absolute; top: 0; bottom: 0;
+    width: 10px; background: white;
+    opacity: 0.85;
+  }
+  .street-main-h {
+    position: absolute; left: 0; right: 0;
+    height: 16px; background: white; opacity: 0.95;
+  }
+  .street-main-v {
+    position: absolute; top: 0; bottom: 0;
+    width: 16px; background: white; opacity: 0.95;
+  }
+
+  /* Park block */
+  .park-block {
+    position: absolute;
+    background: #C8E6C0;
+    border-radius: 8px;
+  }
+
+  /* Map pins */
+  .map-pin {
+    position: absolute;
+    transform: translate(-50%, -100%);
+    cursor: pointer;
+    z-index: 10;
+  }
+  .pin-bubble {
+    background: var(--ink);
+    color: white;
+    border-radius: 20px 20px 20px 4px;
+    padding: 6px 10px;
+    font-size: 11px; font-weight: 600;
+    white-space: nowrap;
+    display: flex; align-items: center; gap: 5px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    position: relative;
+  }
+  .pin-bubble.volt { background: var(--volt); color: var(--ink); }
+  .pin-bubble.teal { background: var(--teal); }
+  .pin-bubble.event { background: var(--amber); color: var(--ink); }
+  .pin-emoji { font-size: 13px; }
+  .pin-badge {
+    position: absolute; top: -4px; right: -4px;
+    width: 14px; height: 14px; border-radius: 50%;
+    background: var(--red); border: 2px solid white;
+    font-size: 8px; font-weight: 700; color: white;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  /* User dot */
+  .user-dot {
+    position: absolute;
+    width: 20px; height: 20px;
+    transform: translate(-50%,-50%);
+    z-index: 11;
+  }
+  .user-dot-inner {
+    width: 14px; height: 14px; border-radius: 50%;
+    background: var(--teal);
+    border: 3px solid white;
+    box-shadow: 0 2px 8px rgba(0,180,160,0.5);
+    margin: 3px;
+  }
+  .user-dot-ring {
+    position: absolute; inset: 0;
+    border-radius: 50%;
+    border: 2px solid rgba(0,180,160,0.3);
+    animation: pulse-ring 2s ease-out infinite;
+  }
+  @keyframes pulse-ring { 0%{transform:scale(1);opacity:0.6} 100%{transform:scale(2.2);opacity:0} }
+
+  /* Map controls */
+  .map-controls {
+    position: absolute; right: 12px; bottom: 12px;
+    display: flex; flex-direction: column; gap: 6px;
+  }
+  .map-btn {
+    width: 36px; height: 36px;
+    background: white; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 17px; font-weight: 500;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    cursor: pointer; color: var(--ink);
+  }
+
+  /* Filter chips */
+  .filter-row {
+    display: flex; gap: 8px; padding: 10px 16px;
+    overflow-x: auto; scrollbar-width: none;
+  }
+  .filter-row::-webkit-scrollbar { display: none; }
+  .chip {
+    flex-shrink: 0;
+    font-size: 12px; font-weight: 600;
+    padding: 6px 14px; border-radius: 99px;
+    border: 1.5px solid var(--border);
+    background: white; color: var(--slate);
+    cursor: pointer; white-space: nowrap;
+    display: flex; align-items: center; gap: 5px;
+  }
+  .chip.active {
+    background: var(--ink); color: var(--volt);
+    border-color: var(--ink);
+  }
+  .chip.event-chip { border-color: var(--amber); color: #7A4100; background: var(--amber-light); }
+
+  /* SESSIONS FEED */
+  .feed-section { padding: 0 16px 16px; }
+  .feed-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 14px; font-weight: 700;
+    text-transform: uppercase; color: var(--slate);
+    letter-spacing: 0.06em;
+    margin-bottom: 10px; padding-top: 4px;
+  }
+
+  .session-card {
+    background: var(--mist);
+    border-radius: 16px;
+    padding: 14px;
+    margin-bottom: 10px;
+    display: flex; gap: 10px;
+    align-items: flex-start;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .session-card:hover { background: #E4E8EE; }
+  .session-card.event-card {
+    background: var(--amber-light);
+    border: 1.5px solid var(--amber);
+  }
+
+  .sess-avatar {
+    width: 40px; height: 40px; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; flex-shrink: 0;
+  }
+  .sa-teal { background: var(--teal-light); }
+  .sa-green { background: var(--green-light); }
+  .sa-amber { background: var(--amber-light); }
+  .sa-event { background: var(--amber); }
+
+  .sess-body { flex: 1; min-width: 0; }
+  .sess-sport {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 15px; font-weight: 700;
+    text-transform: uppercase; color: var(--ink);
+    line-height: 1.1; margin-bottom: 2px;
+  }
+  .sess-meta { font-size: 12px; color: var(--slate); }
+  .sess-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
+  .sess-tag {
+    font-size: 10px; font-weight: 600;
+    padding: 2px 7px; border-radius: 4px;
+    background: white; color: var(--ink-mid);
+    border: 1px solid var(--border);
+  }
+  .sess-tag.green { background: var(--green-light); color: #1A6B3E; border-color: #A0D9B8; }
+  .sess-tag.amber { background: var(--amber-light); color: #7A4100; border-color: #FAC775; }
+  .sess-tag.red { background: var(--red-light); color: #8B1A1A; border-color: #F7C1C1; }
+
+  .sess-right { flex-shrink: 0; text-align: right; }
+  .sess-time { font-family: 'Barlow Condensed', sans-serif; font-size: 18px; font-weight: 800; color: var(--ink); line-height: 1; }
+  .sess-dist { font-size: 11px; color: var(--slate); }
+  .join-btn {
+    margin-top: 6px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.06em;
+    background: var(--ink); color: var(--volt);
+    border: none; border-radius: 8px;
+    padding: 5px 12px; cursor: pointer;
+  }
+  .join-btn.event { background: var(--amber); color: var(--ink); }
+
+  /* BOTTOM TAB */
+  .bottom-tab {
+    display: flex; border-top: 1px solid var(--border);
+    background: white; padding: 8px 0 16px;
+  }
+  .tab-item {
+    flex: 1; display: flex; flex-direction: column;
+    align-items: center; gap: 3px; cursor: pointer;
+  }
+  .tab-icon { font-size: 20px; }
+  .tab-label { font-size: 10px; font-weight: 600; color: var(--slate); }
+  .tab-item.active .tab-label { color: var(--ink); }
+  .tab-item.active .tab-icon-wrap {
+    background: var(--ink); border-radius: 12px; padding: 4px 14px;
+  }
+
+  /* FAB */
+  .fab {
+    position: absolute;
+    bottom: 72px; right: 16px;
+    width: 52px; height: 52px;
+    border-radius: 16px;
+    background: var(--volt);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 24px;
+    box-shadow: 0 6px 20px rgba(200,255,0,0.4), 0 2px 8px rgba(0,0,0,0.1);
+    cursor: pointer; z-index: 20;
+    font-weight: 300; color: var(--ink);
+  }
+
+  /* ANNOTATIONS */
+  .annotations { flex: 1; min-width: 260px; }
+  .anno-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 16px; font-weight: 700;
+    text-transform: uppercase; color: var(--ink);
+    margin-bottom: 16px; margin-top: 4px;
+  }
+  .anno-item {
+    display: flex; gap: 12px; margin-bottom: 16px;
+    align-items: flex-start;
+  }
+  .anno-num {
+    width: 24px; height: 24px; border-radius: 50%;
+    background: var(--ink); color: var(--volt);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .anno-body { font-size: 13px; color: var(--slate); line-height: 1.6; }
+  .anno-body strong { color: var(--ink); font-weight: 600; }
+
+  /* SCREEN 2 - PUBLISH FLOW */
+  .publish-header {
+    padding: 14px 20px;
+    display: flex; align-items: center; gap: 10px;
+    border-bottom: 1px solid var(--border);
+  }
+  .back-btn {
+    width: 32px; height: 32px; border-radius: 10px;
+    background: var(--mist);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; color: var(--ink); cursor: pointer;
+  }
+  .pub-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 17px; font-weight: 700;
+    text-transform: uppercase; color: var(--ink);
+    flex: 1;
+  }
+
+  .publish-body { padding: 16px; overflow-y: auto; }
+
+  .pub-section-label {
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--slate); margin-bottom: 10px;
+  }
+
+  .sport-selector {
+    display: grid; grid-template-columns: repeat(3,1fr); gap: 8px;
+    margin-bottom: 20px;
+  }
+  .sport-opt {
+    border: 1.5px solid var(--border);
+    border-radius: 12px; padding: 10px 6px;
+    display: flex; flex-direction: column; align-items: center; gap: 4px;
+    cursor: pointer; background: white;
+    transition: all 0.15s;
+  }
+  .sport-opt.selected { border-color: var(--ink); background: var(--ink); }
+  .sport-opt.selected .so-label { color: var(--volt); }
+  .so-icon { font-size: 22px; }
+  .so-label { font-family: 'Barlow Condensed', sans-serif; font-size: 12px; font-weight: 700; text-transform: uppercase; color: var(--ink); }
+
+  .field-row {
+    display: flex; gap: 10px; margin-bottom: 14px;
+  }
+  .field {
+    flex: 1;
+    background: var(--mist); border-radius: 12px;
+    padding: 12px 14px; cursor: pointer;
+  }
+  .field-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--slate); margin-bottom: 3px; }
+  .field-val { font-family: 'Barlow Condensed', sans-serif; font-size: 17px; font-weight: 700; color: var(--ink); }
+  .field-val.placeholder { color: var(--slate); font-weight: 400; font-size: 14px; }
+
+  .level-selector { display: flex; gap: 8px; margin-bottom: 20px; }
+  .level-opt {
+    flex: 1; border: 1.5px solid var(--border);
+    border-radius: 10px; padding: 8px 6px;
+    text-align: center; cursor: pointer;
+    transition: all 0.15s;
+  }
+  .level-opt.selected.rx { border-color: var(--red); background: var(--red-light); }
+  .level-opt.selected.scaled { border-color: var(--amber); background: var(--amber-light); }
+  .level-opt.selected.beginner { border-color: var(--green); background: var(--green-light); }
+  .lo-name { font-family: 'Barlow Condensed', sans-serif; font-size: 14px; font-weight: 700; text-transform: uppercase; color: var(--ink); }
+  .lo-desc { font-size: 10px; color: var(--slate); margin-top: 2px; }
+
+  .toggle-row {
+    display: flex; justify-content: space-between; align-items: center;
+    background: var(--mist); border-radius: 12px;
+    padding: 12px 14px; margin-bottom: 10px;
+  }
+  .tr-label { font-size: 13px; font-weight: 500; color: var(--ink); }
+  .tr-sub { font-size: 11px; color: var(--slate); }
+  .toggle {
+    width: 42px; height: 24px;
+    border-radius: 12px;
+    display: flex; align-items: center; padding: 3px;
+    cursor: pointer; flex-shrink: 0;
+  }
+  .toggle.on { background: var(--ink); justify-content: flex-end; }
+  .toggle.off { background: var(--border); justify-content: flex-start; }
+  .toggle-thumb { width: 18px; height: 18px; border-radius: 50%; background: white; }
+  .toggle.on .toggle-thumb { background: var(--volt); }
+
+  .pub-btn {
+    width: 100%; margin-top: 16px;
+    background: var(--ink); color: var(--volt);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 16px; font-weight: 800;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    border: none; border-radius: 14px; padding: 15px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+  }
+
+  /* SCREEN 3 - EVENT DETAIL */
+  .event-hero {
+    background: var(--ink);
+    padding: 20px;
+    position: relative; overflow: hidden;
+  }
+  .event-hero::before {
+    content: '';
+    position: absolute; top: -40px; right: -40px;
+    width: 180px; height: 180px; border-radius: 50%;
+    background: var(--amber); opacity: 0.12;
+  }
+  .eh-sponsor {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(245,166,35,0.2);
+    border: 1px solid rgba(245,166,35,0.4);
+    border-radius: 6px; padding: 4px 10px;
+    font-size: 11px; font-weight: 600; color: var(--amber);
+    margin-bottom: 10px;
+  }
+  .eh-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 26px; font-weight: 800;
+    text-transform: uppercase; color: white;
+    line-height: 1.05; margin-bottom: 8px;
+  }
+  .eh-meta { font-size: 13px; color: rgba(255,255,255,0.55); }
+
+  .event-body { padding: 16px; overflow-y: auto; }
+
+  .event-stats {
+    display: flex; gap: 8px; margin-bottom: 16px;
+  }
+  .estat {
+    flex: 1; background: var(--mist); border-radius: 12px;
+    padding: 12px 10px; text-align: center;
+  }
+  .estat-val { font-family: 'Barlow Condensed', sans-serif; font-size: 20px; font-weight: 800; color: var(--ink); line-height: 1; }
+  .estat-label { font-size: 10px; color: var(--slate); font-weight: 500; margin-top: 3px; }
+
+  .gym-card {
+    display: flex; gap: 12px; align-items: center;
+    background: var(--amber-light); border: 1.5px solid var(--amber);
+    border-radius: 14px; padding: 14px;
+    margin-bottom: 14px;
+  }
+  .gym-logo {
+    width: 48px; height: 48px; border-radius: 12px;
+    background: var(--ink); display: flex; align-items: center; justify-content: center;
+    font-size: 22px; flex-shrink: 0;
+  }
+  .gym-name { font-family: 'Barlow Condensed', sans-serif; font-size: 17px; font-weight: 700; text-transform: uppercase; color: var(--ink); margin-bottom: 2px; }
+  .gym-sub { font-size: 12px; color: var(--slate); }
+  .gym-badge { font-size: 11px; color: #7A4100; font-weight: 600; margin-top: 4px; display: flex; align-items: center; gap: 4px; }
+
+  .wod-block {
+    background: var(--mist); border-radius: 14px;
+    padding: 14px; margin-bottom: 14px;
+  }
+  .wod-label { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--slate); margin-bottom: 8px; }
+  .wod-exercise { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+  .wod-num { font-family: 'Barlow Condensed', sans-serif; font-size: 18px; font-weight: 800; color: var(--ink); min-width: 36px; line-height: 1; }
+  .wod-name { font-size: 13px; color: var(--ink); font-weight: 500; }
+  .wod-note { font-size: 11px; color: var(--slate); }
+
+  .level-availability {
+    display: flex; gap: 8px; margin-bottom: 14px;
+  }
+  .lav {
+    flex: 1; border-radius: 12px; padding: 10px;
+    text-align: center; border: 1.5px solid;
+  }
+  .lav-rx { border-color: var(--red); background: var(--red-light); }
+  .lav-sc { border-color: var(--amber); background: var(--amber-light); }
+  .lav-bg { border-color: var(--green); background: var(--green-light); }
+  .lav-name { font-family: 'Barlow Condensed', sans-serif; font-size: 14px; font-weight: 700; text-transform: uppercase; color: var(--ink); }
+  .lav-spots { font-size: 11px; margin-top: 3px; }
+  .lav-rx .lav-spots { color: #8B1A1A; }
+  .lav-sc .lav-spots { color: #7A4100; }
+  .lav-bg .lav-spots { color: #1A6B3E; }
+
+  .register-btn {
+    width: 100%; background: var(--amber); color: var(--ink);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 16px; font-weight: 800;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    border: none; border-radius: 14px; padding: 15px;
+    cursor: pointer; margin-bottom: 10px;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+  }
+  .chat-pre-btn {
+    width: 100%; background: var(--mist); color: var(--ink);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 14px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.06em;
+    border: none; border-radius: 14px; padding: 12px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center; gap: 6px;
+  }
+
+  /* SCREEN 4 - PROFILE */
+  .profile-hero {
+    background: var(--ink); padding: 24px 20px 20px;
+    position: relative; overflow: hidden;
+  }
+  .profile-hero::before {
+    content: '';
+    position: absolute; bottom: -40px; right: -40px;
+    width: 160px; height: 160px; border-radius: 50%;
+    background: var(--teal); opacity: 0.1;
+  }
+  .prof-avatar-wrap {
+    display: flex; align-items: flex-end; gap: 14px; margin-bottom: 14px;
+  }
+  .prof-avatar {
+    width: 68px; height: 68px; border-radius: 20px;
+    background: var(--teal);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 26px; font-weight: 800; color: white;
+    border: 3px solid rgba(255,255,255,0.2);
+  }
+  .verified-stack { display: flex; flex-direction: column; gap: 4px; }
+  .vbadge {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 11px; font-weight: 600;
+    padding: 3px 10px; border-radius: 5px;
+  }
+  .vb-ine { background: rgba(200,255,0,0.2); color: var(--volt); border: 1px solid rgba(200,255,0,0.3); }
+  .vb-phone { background: rgba(0,180,160,0.2); color: #7AF5E8; border: 1px solid rgba(0,180,160,0.3); }
+  .prof-name { font-family: 'Barlow Condensed', sans-serif; font-size: 24px; font-weight: 800; text-transform: uppercase; color: white; margin-bottom: 2px; }
+  .prof-sub { font-size: 12px; color: rgba(255,255,255,0.5); }
+  .prof-rating {
+    display: flex; align-items: center; gap: 8px;
+    margin-top: 12px;
+  }
+  .rating-stars-small { color: var(--volt); font-size: 14px; letter-spacing: 1px; }
+  .rating-num { font-family: 'Barlow Condensed', sans-serif; font-size: 22px; font-weight: 800; color: white; }
+  .rating-count { font-size: 12px; color: rgba(255,255,255,0.4); }
+
+  .prof-body { padding: 16px; overflow-y: auto; }
+  .prof-stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin-bottom: 16px; }
+  .pstat { background: var(--mist); border-radius: 12px; padding: 12px 8px; text-align: center; }
+  .pstat-val { font-family: 'Barlow Condensed', sans-serif; font-size: 22px; font-weight: 800; color: var(--ink); line-height: 1; }
+  .pstat-label { font-size: 10px; color: var(--slate); font-weight: 500; margin-top: 3px; }
+
+  .sport-prefs { margin-bottom: 16px; }
+  .spref-label { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--slate); margin-bottom: 8px; }
+  .sport-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .sport-chip {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 12px; font-weight: 600;
+    padding: 6px 12px; border-radius: 8px;
+    border: 1.5px solid var(--border); background: white;
+    color: var(--ink);
+  }
+  .sport-chip.primary { background: var(--ink); color: var(--volt); border-color: var(--ink); }
+
+  .schedule-grid {
+    background: var(--mist); border-radius: 14px; padding: 12px;
+    margin-bottom: 16px;
+  }
+  .sg-label { font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--slate); margin-bottom: 10px; }
+  .sg-days { display: flex; gap: 6px; }
+  .sg-day {
+    flex: 1; text-align: center; padding: 8px 4px;
+    border-radius: 8px;
+  }
+  .sg-day.active { background: var(--ink); }
+  .sg-day-name { font-size: 9px; font-weight: 700; text-transform: uppercase; color: var(--slate); margin-bottom: 4px; }
+  .sg-day.active .sg-day-name { color: rgba(255,255,255,0.5); }
+  .sg-day-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--border); margin: 0 auto; }
+  .sg-day.active .sg-day-dot { background: var(--volt); }
+
+  .women-toggle-row {
+    display: flex; justify-content: space-between; align-items: center;
+    background: #F8F0FF; border: 1.5px solid #DDA0D8;
+    border-radius: 14px; padding: 14px;
+    margin-bottom: 16px;
+  }
+  .wtr-left { display: flex; gap: 10px; align-items: center; }
+  .wtr-icon { font-size: 24px; }
+  .wtr-title { font-family: 'Barlow Condensed', sans-serif; font-size: 15px; font-weight: 700; text-transform: uppercase; color: #6B1A6B; margin-bottom: 2px; }
+  .wtr-sub { font-size: 11px; color: #7A2A7A; }
+
+  /* LAYOUT WRAPPER */
+  .screens-row {
+    display: flex;
+    gap: 40px;
+    padding: 0 48px;
+    flex-wrap: wrap;
+    align-items: flex-start;
+  }
+  .screen-col { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+  .screen-caption {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px; font-weight: 700;
+    text-transform: uppercase; color: var(--slate);
+    letter-spacing: 0.06em;
+  }
+
+  /* FOOTER */
+  .footer {
+    background: var(--ink);
+    padding: 32px 48px;
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 16px;
+    margin-top: 40px;
+  }
+  .footer-left h3 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 22px; font-weight: 800;
+    text-transform: uppercase; color: white; margin-bottom: 4px;
+  }
+  .footer-left h3 span { color: var(--volt); }
+  .footer-left p { font-size: 13px; color: rgba(255,255,255,0.45); }
+  .footer-pill {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(200,255,0,0.1); border: 1px solid rgba(200,255,0,0.2);
+    border-radius: 8px; padding: 8px 18px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.06em; color: var(--volt);
+  }
+</style>
+</head>
+<body>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <div class="ph-label"><span class="ph-dot"></span> Mockup interactivo — v1.0</div>
+  <h1>SportMatch<br><em>App Mockup</em></h1>
+  <p>Deporte funcional · CDMX · Nicho CrossFit, Calistenia & HIIT — 4 pantallas principales: mapa, publicar sesión, evento patrocinado y perfil verificado.</p>
+</div>
+
+<!-- ═══ SCREEN 1: MAPA PRINCIPAL ═══ -->
+<div class="screen-block">
+  <div class="screen-label">
+    <div class="sl-num">Pantalla 01</div>
+    <div class="sl-title">Mapa principal — Sesiones en tu zona</div>
+    <div class="sl-line"></div>
+  </div>
+
+  <div class="phone-stage">
+    <div class="phone-wrap">
+      <div class="phone">
+        <div class="phone-notch"><div class="phone-notch-inner"></div></div>
+        <div class="phone-screen">
+
+          <!-- Status + Nav -->
+          <div class="status-bar">
+            <span>9:41</span>
+            <div class="status-right">
+              <div class="sig">
+                <span style="height:4px"></span>
+                <span style="height:7px"></span>
+                <span style="height:10px"></span>
+                <span style="height:13px"></span>
+              </div>
+              <span>📶</span>
+              <span>🔋</span>
+            </div>
+          </div>
+
+          <div class="app-nav">
+            <div class="app-logo">Sport<span>Match</span></div>
+            <div class="nav-icons">
+              <div class="nav-icon">🔔</div>
+              <div class="nav-avatar">MV</div>
+            </div>
+          </div>
+
+          <!-- MAP -->
+          <div class="map-area">
+            <!-- Streets -->
+            <div class="street-main-h" style="top:110px"></div>
+            <div class="street-main-h" style="top:220px"></div>
+            <div class="street-main-v" style="left:80px"></div>
+            <div class="street-main-v" style="left:200px"></div>
+            <div class="street-h" style="top:55px"></div>
+            <div class="street-h" style="top:165px"></div>
+            <div class="street-h" style="top:270px"></div>
+            <div class="street-v" style="left:140px"></div>
+            <div class="street-v" style="left:260px"></div>
+
+            <!-- Park -->
+            <div class="park-block" style="left:90px;top:125px;width:100px;height:85px"></div>
+
+            <!-- User location -->
+            <div class="user-dot" style="left:200px;top:175px">
+              <div class="user-dot-ring"></div>
+              <div class="user-dot-inner"></div>
+            </div>
+
+            <!-- Pins -->
+            <div class="map-pin" style="left:130px;top:118px">
+              <div class="pin-bubble teal"><span class="pin-emoji">🏋️</span> CrossFit WOD</div>
+            </div>
+
+            <div class="map-pin" style="left:240px;top:145px">
+              <div class="pin-bubble volt"><span class="pin-emoji">🤸</span> Calistenia</div>
+            </div>
+
+            <div class="map-pin" style="left:175px;top:220px">
+              <div class="pin-bubble event"><span class="pin-emoji">🏆</span> Evento Box Alpha
+                <div class="pin-badge">!</div>
+              </div>
+            </div>
+
+            <div class="map-pin" style="left:60px;top:200px">
+              <div class="pin-bubble"><span class="pin-emoji">⚡</span> HIIT</div>
+            </div>
+
+            <div class="map-pin" style="left:285px;top:258px">
+              <div class="pin-bubble teal"><span class="pin-emoji">🏃</span> Running</div>
+            </div>
+
+            <!-- Controls -->
+            <div class="map-controls">
+              <div class="map-btn">＋</div>
+              <div class="map-btn">－</div>
+              <div class="map-btn">⊙</div>
+            </div>
+          </div>
+
+          <!-- Filters -->
+          <div class="filter-row">
+            <div class="chip active">🏋️ Funcional</div>
+            <div class="chip event-chip">🏆 Eventos</div>
+            <div class="chip">🤸 Calistenia</div>
+            <div class="chip">⚡ HIIT</div>
+            <div class="chip">🏃 Running</div>
+            <div class="chip">🎾 Tenis</div>
+          </div>
+
+          <!-- Feed -->
+          <div class="feed-section">
+            <div class="feed-title">Cerca de ti · 3 sesiones</div>
+
+            <!-- Event card -->
+            <div class="session-card event-card">
+              <div class="sess-avatar sa-event">🏆</div>
+              <div class="sess-body">
+                <div class="sess-sport">CrossFit Abierto — Box Alpha</div>
+                <div class="sess-meta">Roma Norte · Patrocinado por Box Alpha Condesa</div>
+                <div class="sess-tags">
+                  <div class="sess-tag amber">🏆 Evento</div>
+                  <div class="sess-tag">20 cupos</div>
+                  <div class="sess-tag green">3 spots free</div>
+                  <div class="sess-tag">RX · Scaled</div>
+                </div>
+              </div>
+              <div class="sess-right">
+                <div class="sess-time">7:00</div>
+                <div class="sess-dist">Mañana</div>
+                <button class="join-btn event">Ver →</button>
+              </div>
+            </div>
+
+            <!-- Regular session -->
+            <div class="session-card">
+              <div class="sess-avatar sa-teal">🏋️</div>
+              <div class="sess-body">
+                <div class="sess-sport">WOD Matutino</div>
+                <div class="sess-meta">Condesa · 0.4 km · Carlos M. ★4.9</div>
+                <div class="sess-tags">
+                  <div class="sess-tag green">INE ✓</div>
+                  <div class="sess-tag">Scaled</div>
+                  <div class="sess-tag">1 spot</div>
+                </div>
+              </div>
+              <div class="sess-right">
+                <div class="sess-time">6:30</div>
+                <div class="sess-dist">0.4 km</div>
+                <button class="join-btn">Unirse</button>
+              </div>
+            </div>
+
+            <!-- Calistenia session -->
+            <div class="session-card">
+              <div class="sess-avatar sa-green">🤸</div>
+              <div class="sess-body">
+                <div class="sess-sport">Calistenia Parque</div>
+                <div class="sess-meta">Parque México · Andrea T. ★4.7</div>
+                <div class="sess-tags">
+                  <div class="sess-tag green">INE ✓</div>
+                  <div class="sess-tag amber">Solo mujeres ♀</div>
+                  <div class="sess-tag">Intermedio</div>
+                </div>
+              </div>
+              <div class="sess-right">
+                <div class="sess-time">7:30</div>
+                <div class="sess-dist">0.8 km</div>
+                <button class="join-btn">Unirse</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bottom tab -->
+          <div class="bottom-tab">
+            <div class="tab-item active">
+              <div class="tab-icon-wrap"><div class="tab-icon">🗺️</div></div>
+              <div class="tab-label">Mapa</div>
+            </div>
+            <div class="tab-item">
+              <div class="tab-icon">🏆</div>
+              <div class="tab-label">Eventos</div>
+            </div>
+            <div class="tab-item">
+              <div class="tab-icon">💬</div>
+              <div class="tab-label">Chats</div>
+            </div>
+            <div class="tab-item">
+              <div class="tab-icon">👤</div>
+              <div class="tab-label">Perfil</div>
+            </div>
+          </div>
+
+          <!-- FAB -->
+          <div class="fab">＋</div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="annotations">
+      <div class="anno-title">Decisiones de diseño</div>
+      <div class="anno-item">
+        <div class="anno-num">1</div>
+        <div class="anno-body"><strong>Mapa como pantalla principal:</strong> las sesiones tienen coordenada — mostrarlas en mapa crea contexto inmediato. No es un feed, es una vista de tu entorno en tiempo real.</div>
+      </div>
+      <div class="anno-item">
+        <div class="anno-num">2</div>
+        <div class="anno-body"><strong>Pin especial para eventos patrocinados:</strong> badge naranja + ícono de trofeo diferencia los eventos de gym de las sesiones usuario a usuario. Más visibilidad = más valor para el B2B.</div>
+      </div>
+      <div class="anno-item">
+        <div class="anno-num">3</div>
+        <div class="anno-body"><strong>Filtros por deporte:</strong> nicho funcional activo por default. El usuario de CrossFit no quiere ver sesiones de tenis en su feed.</div>
+      </div>
+      <div class="anno-item">
+        <div class="anno-num">4</div>
+        <div class="anno-body"><strong>Badge "INE ✓" en el feed:</strong> el nivel de verificación aparece en la tarjeta — no hay que entrar al perfil para saberlo. Reduce fricción de decisión.</div>
+      </div>
+      <div class="anno-item">
+        <div class="anno-num">5</div>
+        <div class="anno-body"><strong>FAB para publicar sesión:</strong> el botón "+" siempre visible lleva al flujo de publicación. La sesión que publicas aparece en el mapa en tiempo real.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SCREEN 2: PUBLICAR SESIÓN + SCREEN 3: EVENTO ═══ -->
+<div class="screen-block">
+  <div class="screen-label">
+    <div class="sl-num">Pantallas 02 & 03</div>
+    <div class="sl-title">Publicar sesión · Evento patrocinado</div>
+    <div class="sl-line"></div>
+  </div>
+
+  <div class="screens-row">
+
+    <!-- PUBLISH SCREEN -->
+    <div class="screen-col">
+      <div class="phone">
+        <div class="phone-notch"><div class="phone-notch-inner"></div></div>
+        <div class="phone-screen" style="min-height:680px">
+
+          <div class="status-bar">
+            <span>9:42</span>
+            <div class="status-right"><span>📶</span><span>🔋</span></div>
+          </div>
+
+          <div class="publish-header">
+            <div class="back-btn">←</div>
+            <div class="pub-title">Publicar sesión</div>
+          </div>
+
+          <div class="publish-body">
+
+            <div class="pub-section-label">¿Qué deporte?</div>
+            <div class="sport-selector">
+              <div class="sport-opt selected">
+                <span class="so-icon">🏋️</span>
+                <span class="so-label">CrossFit</span>
+              </div>
+              <div class="sport-opt">
+                <span class="so-icon">🤸</span>
+                <span class="so-label">Calistenia</span>
+              </div>
+              <div class="sport-opt">
+                <span class="so-icon">⚡</span>
+                <span class="so-label">HIIT</span>
+              </div>
+              <div class="sport-opt">
+                <span class="so-icon">🏃</span>
+                <span class="so-label">Running</span>
+              </div>
+              <div class="sport-opt">
+                <span class="so-icon">🎾</span>
+                <span class="so-label">Tenis</span>
+              </div>
+              <div class="sport-opt">
+                <span class="so-icon">🧘</span>
+                <span class="so-label">Yoga</span>
+              </div>
+            </div>
+
+            <div class="pub-section-label">Cuándo y dónde</div>
+            <div class="field-row">
+              <div class="field">
+                <div class="field-label">Día</div>
+                <div class="field-val">Mañana</div>
+              </div>
+              <div class="field">
+                <div class="field-label">Hora</div>
+                <div class="field-val">7:00 am</div>
+              </div>
+            </div>
+            <div class="field-row">
+              <div class="field" style="flex:1">
+                <div class="field-label">Zona</div>
+                <div class="field-val placeholder">Ej. Roma Norte, Parque México</div>
+              </div>
+            </div>
+
+            <div class="pub-section-label" style="margin-top:4px">Nivel</div>
+            <div class="level-selector">
+              <div class="level-opt selected rx">
+                <div class="lo-name">RX</div>
+                <div class="lo-desc">Competitivo</div>
+              </div>
+              <div class="level-opt">
+                <div class="lo-name">Scaled</div>
+                <div class="lo-desc">Intermedio</div>
+              </div>
+              <div class="level-opt">
+                <div class="lo-name">Beginner</div>
+                <div class="lo-desc">Iniciando</div>
+              </div>
+            </div>
+
+            <div class="pub-section-label">Opciones</div>
+            <div class="toggle-row">
+              <div>
+                <div class="tr-label">Solo mujeres ♀</div>
+                <div class="tr-sub">Requiere verificación INE</div>
+              </div>
+              <div class="toggle off"><div class="toggle-thumb"></div></div>
+            </div>
+            <div class="toggle-row">
+              <div>
+                <div class="tr-label">Notificar por WhatsApp</div>
+                <div class="tr-sub">Avisa cuando alguien se une</div>
+              </div>
+              <div class="toggle on"><div class="toggle-thumb"></div></div>
+            </div>
+
+            <button class="pub-btn">⚡ Publicar en el mapa</button>
+
+          </div>
+        </div>
+      </div>
+      <div class="screen-caption">Publicar sesión</div>
+    </div>
+
+    <!-- EVENT SCREEN -->
+    <div class="screen-col">
+      <div class="phone">
+        <div class="phone-notch"><div class="phone-notch-inner"></div></div>
+        <div class="phone-screen" style="min-height:680px">
+
+          <div class="status-bar" style="background:var(--ink);color:rgba(255,255,255,0.7)">
+            <span>9:43</span>
+            <div class="status-right"><span style="color:rgba(255,255,255,0.7)">📶 🔋</span></div>
+          </div>
+
+          <div class="event-hero">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+              <div style="color:rgba(255,255,255,0.5);font-size:18px;cursor:pointer">←</div>
+              <div class="eh-sponsor">🏆 Evento patrocinado · Box Alpha</div>
+            </div>
+            <div class="eh-title">CrossFit<br>Abierto CDMX</div>
+            <div class="eh-meta">Mañana · 7:00 am · Roma Norte, CDMX</div>
+          </div>
+
+          <div class="event-body">
+
+            <div class="event-stats">
+              <div class="estat">
+                <div class="estat-val">20</div>
+                <div class="estat-label">cupos totales</div>
+              </div>
+              <div class="estat">
+                <div class="estat-val">7</div>
+                <div class="estat-label">spots libres</div>
+              </div>
+              <div class="estat">
+                <div class="estat-val">$0</div>
+                <div class="estat-label">costo entrada</div>
+              </div>
+            </div>
+
+            <div class="gym-card">
+              <div class="gym-logo">⚔️</div>
+              <div>
+                <div class="gym-name">Box Alpha Condesa</div>
+                <div class="gym-sub">Tamaulipas 95, Condesa · 0.3 km</div>
+                <div class="gym-badge">✓ Espacio verificado SportMatch · Patrocinador oficial</div>
+              </div>
+            </div>
+
+            <div class="wod-block">
+              <div class="wod-label">WOD del evento — AMRAP 20 min</div>
+              <div class="wod-exercise">
+                <div class="wod-num">21</div>
+                <div><div class="wod-name">Thrusters</div><div class="wod-note">RX: 43kg · Scaled: 29kg</div></div>
+              </div>
+              <div class="wod-exercise">
+                <div class="wod-num">15</div>
+                <div><div class="wod-name">Pull-ups</div><div class="wod-note">RX: strict · Scaled: banded</div></div>
+              </div>
+              <div class="wod-exercise">
+                <div class="wod-num">9</div>
+                <div><div class="wod-name">Box Jumps</div><div class="wod-note">RX: 24" · Scaled: 20"</div></div>
+              </div>
+            </div>
+
+            <div class="pub-section-label">Disponibilidad por nivel</div>
+            <div class="level-availability">
+              <div class="lav lav-rx">
+                <div class="lav-name">RX</div>
+                <div class="lav-spots">2 spots</div>
+              </div>
+              <div class="lav lav-sc">
+                <div class="lav-name">Scaled</div>
+                <div class="lav-spots">4 spots</div>
+              </div>
+              <div class="lav lav-bg">
+                <div class="lav-name">Beginner</div>
+                <div class="lav-spots">1 spot</div>
+              </div>
+            </div>
+
+            <button class="register-btn">🏆 Inscribirme al evento</button>
+            <button class="chat-pre-btn">💬 Chat con asistentes primero</button>
+
+          </div>
+        </div>
+      </div>
+      <div class="screen-caption">Evento patrocinado</div>
+    </div>
+
+    <!-- ANNOTATIONS -->
+    <div class="annotations" style="min-width:220px;max-width:300px">
+      <div class="anno-title">Flujo de publicación</div>
+      <div class="anno-item">
+        <div class="anno-num">A</div>
+        <div class="anno-body"><strong>Deporte primero:</strong> el primer selector es el deporte — define los filtros de nivel y los campos disponibles (pace para running, nivel RX/Scaled para CrossFit).</div>
+      </div>
+      <div class="anno-item">
+        <div class="anno-num">B</div>
+        <div class="anno-body"><strong>Toggle "Solo mujeres" en publicación:</strong> la usuaria lo activa al crear la sesión — no hay que ir a configuración. Requiere verificación INE activa.</div>
+      </div>
+      <div class="anno-item">
+        <div class="anno-num">C</div>
+        <div class="anno-body"><strong>WhatsApp nativo:</strong> la notificación al teléfono cuando alguien se une es el core loop de retención. La sesión vive en la app pero el gatillo es WhatsApp.</div>
+      </div>
+      <div style="margin-top:20px">
+      <div class="anno-title">Evento patrocinado</div>
+      <div class="anno-item">
+        <div class="anno-num">D</div>
+        <div class="anno-body"><strong>WOD visible antes de inscribirse:</strong> el usuario ve qué va a hacer antes de registrarse. Transparencia = mayor tasa de asistencia y menos no-shows.</div>
+      </div>
+      <div class="anno-item">
+        <div class="anno-num">E</div>
+        <div class="anno-body"><strong>Chat antes de confirmar:</strong> el botón secundario lleva al chat grupal del evento donde los participantes se presentan antes del día. Reduce la ansiedad social de conocer extraños.</div>
+      </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══ SCREEN 4: PERFIL ═══ -->
+<div class="screen-block">
+  <div class="screen-label">
+    <div class="sl-num">Pantalla 04</div>
+    <div class="sl-title">Perfil — Verificación e identidad deportiva</div>
+    <div class="sl-line"></div>
+  </div>
+
+  <div class="phone-stage">
+    <div class="phone-wrap">
+      <div class="phone">
+        <div class="phone-notch"><div class="phone-notch-inner"></div></div>
+        <div class="phone-screen" style="min-height:680px">
+
+          <div class="status-bar">
+            <span>9:44</span>
+            <div class="status-right"><span>📶</span><span>🔋</span></div>
+          </div>
+
+          <!-- Profile Hero -->
+          <div class="profile-hero">
+            <div class="prof-avatar-wrap">
+              <div class="prof-avatar">MV</div>
+              <div class="verified-stack">
+                <div class="vbadge vb-ine">✓ INE verificada</div>
+                <div class="vbadge vb-phone">✓ Teléfono</div>
+              </div>
+            </div>
+            <div class="prof-name">Mariana Valdés</div>
+            <div class="prof-sub">La Condesa · Miembro desde enero 2025</div>
+            <div class="prof-rating">
+              <span class="rating-stars-small">★★★★★</span>
+              <span class="rating-num">4.9</span>
+              <span class="rating-count">· 34 sesiones</span>
+            </div>
+          </div>
+
+          <div class="prof-body">
+
+            <div class="prof-stats">
+              <div class="pstat">
+                <div class="pstat-val">34</div>
+                <div class="pstat-label">sesiones</div>
+              </div>
+              <div class="pstat">
+                <div class="pstat-val">98%</div>
+                <div class="pstat-label">asistencia</div>
+              </div>
+              <div class="pstat">
+                <div class="pstat-val">4</div>
+                <div class="pstat-label">eventos</div>
+              </div>
+            </div>
+
+            <div class="sport-prefs">
+              <div class="spref-label">Deportes</div>
+              <div class="sport-chips">
+                <div class="sport-chip primary">🏋️ CrossFit · Scaled</div>
+                <div class="sport-chip">🤸 Calistenia</div>
+                <div class="sport-chip">🏃 Running 5k</div>
+              </div>
+            </div>
+
+            <div class="schedule-grid">
+              <div class="sg-label">Horarios habituales</div>
+              <div class="sg-days">
+                <div class="sg-day active"><div class="sg-day-name">L</div><div class="sg-day-dot"></div></div>
+                <div class="sg-day"><div class="sg-day-name">M</div><div class="sg-day-dot"></div></div>
+                <div class="sg-day active"><div class="sg-day-name">X</div><div class="sg-day-dot"></div></div>
+                <div class="sg-day"><div class="sg-day-name">J</div><div class="sg-day-dot"></div></div>
+                <div class="sg-day active"><div class="sg-day-name">V</div><div class="sg-day-dot"></div></div>
+                <div class="sg-day active"><div class="sg-day-name">S</div><div class="sg-day-dot"></div></div>
+                <div class="sg-day"><div class="sg-day-name">D</div><div class="sg-day-dot"></div></div>
+              </div>
+              <div style="margin-top:8px;font-size:12px;color:var(--slate)">Mañanas 6:00–8:00 am · 0.5–1.5 km desde casa</div>
+            </div>
+
+            <div class="women-toggle-row">
+              <div class="wtr-left">
+                <div class="wtr-icon">♀</div>
+                <div>
+                  <div class="wtr-title">Modo solo mujeres</div>
+                  <div class="wtr-sub">Solo apareces en sesiones de mujeres</div>
+                </div>
+              </div>
+              <div class="toggle on"><div class="toggle-thumb"></div></div>
+            </div>
+
+          </div>
+
+          <!-- Bottom tab -->
+          <div class="bottom-tab">
+            <div class="tab-item"><div class="tab-icon">🗺️</div><div class="tab-label">Mapa</div></div>
+            <div class="tab-item"><div class="tab-icon">🏆</div><div class="tab-label">Eventos</div></div>
+            <div class="tab-item"><div class="tab-icon">💬</div><div class="tab-label">Chats</div></div>
+            <div class="tab-item active"><div class="tab-icon-wrap"><div class="tab-icon">👤</div></div><div class="tab-label">Perfil</div></div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="annotations">
+      <div class="anno-title">El perfil como sistema de confianza</div>
+      <div class="anno-item">
+        <div class="anno-num">1</div>
+        <div class="anno-body"><strong>Badges de verificación siempre visibles:</strong> "INE ✓" y "Teléfono ✓" aparecen en el hero del perfil — cualquiera que lo vea sabe de inmediato el nivel de verificación antes de aceptar la sesión.</div>
+      </div>
+      <div class="anno-item">
+        <div class="anno-num">2</div>
+        <div class="anno-body"><strong>Tasa de asistencia como métrica pública:</strong> el 98% de asistencia es la métrica más valiosa — quién cancela destruye el producto. Es visible y ponderada en el matching.</div>
+      </div>
+      <div class="anno-item">
+        <div class="anno-num">3</div>
+        <div class="anno-body"><strong>Nivel por deporte:</strong> "CrossFit · Scaled" no solo dice qué hace — dice qué nivel. El matching filtra por esto para evitar que un atleta RX y un beginner queden juntos y ambos tengan mala experiencia.</div>
+      </div>
+      <div class="anno-item">
+        <div class="anno-num">4</div>
+        <div class="anno-body"><strong>Horarios como dato de matching:</strong> Lunes, Miércoles, Viernes y Sábados de mañana alimenta el algoritmo de sugerencias. La app puede notificarte proactivamente cuando alguien compatible publica en esos horarios.</div>
+      </div>
+      <div class="anno-item">
+        <div class="anno-num">5</div>
+        <div class="anno-body"><strong>Modo solo mujeres como toggle:</strong> se activa desde el perfil y se aplica automáticamente a todas las sesiones que la usuaria publica o en las que aparece. No hay que recordar activarlo en cada sesión.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <div class="footer-left">
+    <h3>SportMatch — <span>Mockup v1.0</span></h3>
+    <p>Deporte funcional · CDMX · CrossFit, Calistenia, HIIT · Condesa / Roma Norte</p>
+  </div>
+  <div class="footer-pill">→ Siguiente: Flujo de onboarding + verificación INE</div>
+</div>
+
+</body>
+</html>

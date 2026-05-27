@@ -1,0 +1,93 @@
+@import "tailwindcss";
+
+@theme {
+  --color-volt: #C8FF00;
+  --color-volt-dark: #9DCA00;
+  --color-ink: #0E1117;
+  --color-ink-mid: #2A2F3A;
+  --color-slate-app: #4A5260;
+  --color-mist: #EEF0F4;
+  --color-teal-app: #00B4A0;
+  --color-teal-light: #E0F7F5;
+  --color-amber-app: #F5A623;
+  --color-amber-light: #FEF6E7;
+  --color-red-app: #E8393A;
+  --color-red-light: #FEF0F0;
+  --color-green-app: #27AE60;
+  --color-green-light: #E8F8EE;
+  --color-purple-app: #7C3AED;
+  --color-purple-light: #F0EAFF;
+  --color-border-app: #DDE1E8;
+
+  --font-display: 'Barlow Condensed', sans-serif;
+  --font-body: 'Barlow', sans-serif;
+
+  --radius-app: 12px;
+  --radius-app-lg: 20px;
+  --radius-app-xl: 28px;
+}
+
+:root {
+  --volt: #C8FF00;
+  --volt-dark: #9DCA00;
+  --ink: #0E1117;
+  --ink-mid: #2A2F3A;
+  --slate: #4A5260;
+  --mist: #EEF0F4;
+  --teal: #00B4A0;
+  --teal-light: #E0F7F5;
+  --amber: #F5A623;
+  --amber-light: #FEF6E7;
+  --red: #E8393A;
+  --red-light: #FEF0F0;
+  --green: #27AE60;
+  --green-light: #E8F8EE;
+  --purple: #7C3AED;
+  --purple-light: #F0EAFF;
+  --border: #DDE1E8;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body, #root { height: 100%; }
+
+body {
+  font-family: var(--font-body);
+  background: #F4F5F7;
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+}
+
+.font-display { font-family: var(--font-display); }
+.font-body { font-family: var(--font-body); }
+
+/* hide scrollbars in horizontal chip rows */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { scrollbar-width: none; }
+
+/* pulse ring animation for user dot on map */
+@keyframes pulse-ring {
+  0%   { transform: scale(1);   opacity: 0.6; }
+  100% { transform: scale(2.2); opacity: 0;   }
+}
+.animate-pulse-ring { animation: pulse-ring 2s ease-out infinite; }
+
+/* app shell — mobile-first phone simulator on desktop */
+.app-shell {
+  max-width: 440px;
+  margin: 0 auto;
+  min-height: 100vh;
+  background: white;
+  position: relative;
+  box-shadow: 0 24px 60px rgba(14,17,23,0.10), 0 4px 16px rgba(14,17,23,0.06);
+}
+
+@media (min-width: 768px) {
+  .app-shell {
+    margin-top: 24px;
+    margin-bottom: 24px;
+    border-radius: 28px;
+    overflow: hidden;
+    min-height: calc(100vh - 48px);
+  }
+}

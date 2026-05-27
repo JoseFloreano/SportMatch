@@ -1,0 +1,1533 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SportMatch — Plan Completo: Modelo de Negocio & Seguridad</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --volt: #C8FF00;
+    --volt-dark: #9DCA00;
+    --ink: #0E1117;
+    --ink-mid: #2A2F3A;
+    --slate: #4A5260;
+    --mist: #EEF0F4;
+    --white: #FFFFFF;
+    --teal: #00B4A0;
+    --teal-light: #E0F7F5;
+    --red: #E8393A;
+    --red-light: #FEF0F0;
+    --amber: #F5A623;
+    --amber-light: #FEF6E7;
+    --green: #27AE60;
+    --green-light: #E8F8EE;
+    --border: #DDE1E8;
+    --radius: 12px;
+    --radius-lg: 20px;
+    --radius-xl: 28px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Barlow', sans-serif;
+    background: var(--white);
+    color: var(--ink);
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    background: var(--ink);
+    padding: 64px 48px 56px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 360px; height: 360px;
+    border-radius: 50%;
+    background: var(--volt);
+    opacity: 0.07;
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -40px; left: 20%;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    background: var(--teal);
+    opacity: 0.09;
+  }
+
+  .hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(200,255,0,0.12);
+    border: 1px solid rgba(200,255,0,0.3);
+    border-radius: 99px;
+    padding: 4px 14px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--volt);
+    margin-bottom: 20px;
+  }
+
+  .hero-eyebrow span { width: 6px; height: 6px; border-radius: 50%; background: var(--red); display: inline-block; animation: blink 1.4s ease-in-out infinite; }
+
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+  .hero h1 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: clamp(36px, 5vw, 58px);
+    font-weight: 800;
+    line-height: 1.05;
+    color: var(--white);
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+    max-width: 640px;
+    margin-bottom: 16px;
+  }
+
+  .hero h1 em {
+    color: var(--volt);
+    font-style: normal;
+  }
+
+  .hero-sub {
+    font-size: 16px;
+    color: rgba(255,255,255,0.6);
+    max-width: 560px;
+    line-height: 1.65;
+  }
+
+  .threat-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 28px;
+    background: rgba(232,57,58,0.15);
+    border: 1px solid rgba(232,57,58,0.4);
+    border-radius: 8px;
+    padding: 10px 18px;
+    color: #FF7B7C;
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  .threat-badge strong { color: #FF9B9B; font-weight: 600; }
+
+  /* ── MAIN LAYOUT ── */
+  .main { max-width: 900px; margin: 0 auto; padding: 56px 32px 80px; }
+
+  /* ── SECTION HEADERS ── */
+  .sec-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+    margin-top: 56px;
+  }
+
+  .sec-header:first-child { margin-top: 0; }
+
+  .sec-num {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--white);
+    background: var(--ink);
+    padding: 3px 10px;
+    border-radius: 4px;
+  }
+
+  .sec-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    color: var(--ink);
+  }
+
+  .sec-line { flex: 1; height: 1px; background: var(--border); }
+
+  /* ── RISK OVERVIEW ── */
+  .risk-banner {
+    background: var(--red-light);
+    border: 1.5px solid var(--red);
+    border-radius: var(--radius-lg);
+    padding: 24px 28px;
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    margin-bottom: 32px;
+  }
+
+  .risk-icon-wrap {
+    width: 48px; height: 48px;
+    border-radius: 12px;
+    background: var(--red);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .risk-icon-wrap svg { width: 24px; height: 24px; stroke: white; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+  .risk-banner-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 6px;
+  }
+
+  .risk-banner-body {
+    font-size: 14px;
+    color: #7A1A1A;
+    line-height: 1.6;
+  }
+
+  /* ── VERIFICATION LAYERS ── */
+  .layers-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+
+  .layer-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.2s, transform 0.15s;
+  }
+
+  .layer-card:hover { border-color: var(--ink-mid); transform: translateY(-2px); }
+
+  .layer-card.primary {
+    border-color: var(--volt-dark);
+    background: #FAFFF0;
+  }
+
+  .layer-card.primary::after {
+    content: 'NUEVO';
+    position: absolute;
+    top: 14px; right: 14px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    background: var(--volt);
+    color: var(--ink);
+    padding: 2px 8px;
+    border-radius: 4px;
+  }
+
+  .layer-step {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--slate);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .step-dot {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: var(--mist);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--ink);
+  }
+
+  .layer-card.primary .step-dot { background: var(--volt); color: var(--ink); }
+
+  .layer-card-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+
+  .layer-card-body {
+    font-size: 13px;
+    color: var(--slate);
+    line-height: 1.6;
+  }
+
+  .layer-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 14px;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 4px 10px;
+    border-radius: 6px;
+  }
+
+  .tag-req { background: var(--mist); color: var(--ink-mid); }
+  .tag-opt { background: #E0F7F5; color: #006B60; }
+  .tag-new { background: #EBF9D4; color: #3A6B0A; }
+
+  /* ── INE SECTION ── */
+  .ine-block {
+    background: linear-gradient(135deg, #F0FFF4 0%, #FAFFF0 100%);
+    border: 1.5px solid #7DC63E;
+    border-radius: var(--radius-xl);
+    padding: 32px;
+    margin-bottom: 16px;
+  }
+
+  .ine-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .ine-badge {
+    background: var(--ink);
+    color: var(--volt);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    border-radius: 8px;
+  }
+
+  .ine-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 24px;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: var(--ink);
+  }
+
+  .ine-subtitle { font-size: 14px; color: var(--slate); margin-top: 2px; }
+
+  .ine-flow {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    flex-wrap: wrap;
+  }
+
+  .ine-step {
+    flex: 1;
+    min-width: 140px;
+    padding: 16px;
+    background: white;
+    border-radius: 12px;
+    position: relative;
+  }
+
+  .ine-step + .ine-step { margin-left: 8px; }
+
+  .ine-step-num {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 32px;
+    font-weight: 800;
+    color: var(--volt-dark);
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+
+  .ine-step-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+
+  .ine-step-body { font-size: 12px; color: var(--slate); line-height: 1.5; }
+
+  .ine-arrow {
+    display: flex;
+    align-items: center;
+    padding: 0 4px;
+    color: var(--volt-dark);
+    font-size: 20px;
+    font-weight: 300;
+    flex-shrink: 0;
+    align-self: center;
+  }
+
+  .ine-notes {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 20px;
+  }
+
+  .ine-note {
+    background: white;
+    border-radius: 10px;
+    padding: 14px 16px;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    border: 1px solid rgba(125,198,62,0.3);
+  }
+
+  .ine-note-icon {
+    width: 28px; height: 28px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    font-size: 14px;
+  }
+
+  .ine-note-title { font-size: 13px; font-weight: 600; color: var(--ink); margin-bottom: 2px; }
+  .ine-note-body { font-size: 12px; color: var(--slate); line-height: 1.5; }
+
+  /* ── TRUST PILLARS ── */
+  .pillars { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+  .pillar {
+    background: var(--mist);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    border: 1px solid transparent;
+    transition: border-color 0.2s;
+  }
+
+  .pillar:hover { border-color: var(--border); }
+
+  .pillar-icon {
+    width: 40px; height: 40px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 14px;
+    font-size: 18px;
+  }
+
+  .pi-teal { background: var(--teal-light); }
+  .pi-green { background: var(--green-light); }
+  .pi-amber { background: var(--amber-light); }
+  .pi-ink { background: #E8E9EF; }
+
+  .pillar-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+
+  .pillar-body { font-size: 13px; color: var(--slate); line-height: 1.65; }
+
+  .pillar-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+
+  .ptag {
+    font-size: 11px;
+    font-weight: 500;
+    padding: 3px 9px;
+    border-radius: 5px;
+    border: 1px solid var(--border);
+    color: var(--ink-mid);
+    background: white;
+  }
+
+  /* ── RATING SYSTEM ── */
+  .rating-section {
+    background: var(--ink);
+    border-radius: var(--radius-xl);
+    padding: 36px 32px;
+    color: white;
+  }
+
+  .rating-header {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .rating-header h3 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 24px;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: white;
+  }
+
+  .rating-header p { font-size: 14px; color: rgba(255,255,255,0.5); }
+
+  .rating-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+
+  .rating-card {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 14px;
+    padding: 18px;
+  }
+
+  .rating-stars {
+    color: var(--volt);
+    font-size: 16px;
+    margin-bottom: 8px;
+    letter-spacing: 2px;
+  }
+
+  .rating-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.9);
+    margin-bottom: 4px;
+  }
+
+  .rating-body { font-size: 12px; color: rgba(255,255,255,0.5); line-height: 1.5; }
+
+  .rating-consequence {
+    margin-top: 20px;
+    background: rgba(232,57,58,0.15);
+    border: 1px solid rgba(232,57,58,0.3);
+    border-radius: 10px;
+    padding: 14px 18px;
+    font-size: 13px;
+    color: #FF9B9B;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+
+  /* ── WOMEN MODE ── */
+  .women-card {
+    background: linear-gradient(135deg, #FDF0F8 0%, #F8F0FF 100%);
+    border: 1.5px solid #DDA0D8;
+    border-radius: var(--radius-xl);
+    padding: 28px 32px;
+    display: flex;
+    gap: 24px;
+    align-items: flex-start;
+  }
+
+  .women-icon-wrap {
+    width: 56px; height: 56px;
+    border-radius: 16px;
+    background: white;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    border: 1.5px solid #DDA0D8;
+    font-size: 26px;
+  }
+
+  .women-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 22px;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: #6B1A6B;
+    margin-bottom: 6px;
+  }
+
+  .women-body { font-size: 14px; color: #4A1A55; line-height: 1.65; }
+
+  .women-stats {
+    display: flex;
+    gap: 20px;
+    margin-top: 16px;
+    flex-wrap: wrap;
+  }
+
+  .wstat { text-align: center; }
+  .wstat-val { font-family: 'Barlow Condensed', sans-serif; font-size: 28px; font-weight: 800; color: #6B1A6B; line-height: 1; }
+  .wstat-label { font-size: 11px; color: #7A2A7A; margin-top: 2px; font-weight: 500; }
+
+  /* ── CHAT PREVIEW ── */
+  .chat-preview {
+    background: var(--mist);
+    border-radius: var(--radius-xl);
+    padding: 28px;
+  }
+
+  .chat-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .chat-avatar {
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    background: var(--teal);
+    display: flex; align-items: center; justify-content: center;
+    color: white;
+    font-weight: 700;
+    font-size: 14px;
+  }
+
+  .chat-name { font-weight: 600; font-size: 14px; color: var(--ink); }
+  .chat-verified {
+    font-size: 11px;
+    color: var(--green);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .chat-lock-notice {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-size: 12px;
+    color: var(--slate);
+    text-align: center;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    justify-content: center;
+  }
+
+  .bubble {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+
+  .bubble.right { justify-content: flex-end; }
+
+  .bubble-av {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .bav-teal { background: var(--teal-light); color: var(--teal); }
+  .bav-volt { background: #F0FFD0; color: var(--volt-dark); }
+
+  .bubble-text {
+    background: white;
+    border-radius: 14px;
+    padding: 10px 14px;
+    font-size: 13px;
+    color: var(--ink);
+    max-width: 260px;
+    line-height: 1.5;
+    border: 1px solid var(--border);
+  }
+
+  .bubble.right .bubble-text { background: var(--ink); color: white; border-color: var(--ink); }
+
+  .chat-confirm-btn {
+    margin-top: 16px;
+    width: 100%;
+    background: var(--ink);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 14px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    cursor: pointer;
+    transition: background 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .chat-confirm-btn:hover { background: #1E2530; }
+
+  .chat-confirm-btn .lock { color: var(--volt); }
+
+  /* ── SUMMARY TABLE ── */
+  .summary-table { width: 100%; border-collapse: collapse; }
+  .summary-table th {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--slate);
+    padding: 8px 14px;
+    text-align: left;
+    background: var(--mist);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .summary-table th:first-child { border-radius: 10px 0 0 0; }
+  .summary-table th:last-child { border-radius: 0 10px 0 0; }
+
+  .summary-table td {
+    padding: 13px 14px;
+    font-size: 13px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+
+  .summary-table tr:last-child td { border-bottom: none; }
+  .summary-table tr:hover td { background: #FAFBFC; }
+
+  .status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 5px;
+  }
+
+  .sp-req { background: var(--ink); color: var(--volt); }
+  .sp-opt { background: var(--mist); color: var(--ink-mid); }
+  .sp-new { background: #C8FF00; color: var(--ink); }
+
+  .impact-bar {
+    display: flex;
+    gap: 3px;
+    align-items: center;
+  }
+
+  .ibar {
+    width: 12px; height: 12px;
+    border-radius: 3px;
+  }
+
+  .ibar.fill { background: var(--red); }
+  .ibar.empty { background: var(--mist); border: 1px solid var(--border); }
+
+  /* ── FOOTER ── */
+  .footer-cta {
+    background: var(--ink);
+    border-radius: var(--radius-xl);
+    padding: 36px 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+    flex-wrap: wrap;
+    margin-top: 48px;
+  }
+
+  .footer-cta h3 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 26px;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: white;
+    margin-bottom: 4px;
+  }
+
+  .footer-cta h3 span { color: var(--volt); }
+  .footer-cta p { font-size: 14px; color: rgba(255,255,255,0.5); }
+
+  .cta-btn {
+    background: var(--volt);
+    color: var(--ink);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 16px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 14px 32px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.15s;
+    white-space: nowrap;
+  }
+
+  .cta-btn:hover { transform: scale(1.03); }
+
+  /* ── BUSINESS MODEL ── */
+  .biz-intro {
+    background: var(--ink);
+    border-radius: var(--radius-xl);
+    padding: 32px;
+    margin-bottom: 20px;
+    display: flex;
+    gap: 32px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .biz-intro-text h3 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 28px; font-weight: 800;
+    text-transform: uppercase; color: white;
+    margin-bottom: 8px;
+  }
+  .biz-intro-text h3 span { color: var(--volt); }
+  .biz-intro-text p { font-size: 14px; color: rgba(255,255,255,0.55); line-height: 1.65; max-width: 480px; }
+  .biz-metrics { display: flex; gap: 20px; flex-wrap: wrap; }
+  .biz-metric { text-align: center; min-width: 90px; }
+  .biz-metric-val { font-family: 'Barlow Condensed', sans-serif; font-size: 30px; font-weight: 800; color: var(--volt); line-height: 1; }
+  .biz-metric-label { font-size: 11px; color: rgba(255,255,255,0.4); margin-top: 4px; font-weight: 500; }
+  .biz-metric-divider { width: 1px; background: rgba(255,255,255,0.12); align-self: stretch; }
+
+  .revenue-streams { display: grid; grid-template-columns: 1fr; gap: 16px; }
+
+  .stream-card {
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+  .stream-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 20px 24px;
+  }
+  .stream-badge {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 4px 12px; border-radius: 5px;
+    flex-shrink: 0;
+  }
+  .sb-b2b { background: var(--ink); color: var(--volt); }
+  .sb-free { background: var(--teal-light); color: #005A52; }
+  .sb-pro { background: #F0EAFF; color: #4A1D96; }
+  .sb-event { background: var(--amber-light); color: #7A4100; }
+
+  .stream-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 20px; font-weight: 700;
+    text-transform: uppercase; color: var(--ink);
+    flex: 1;
+  }
+  .stream-est {
+    font-size: 13px; font-weight: 600;
+    color: var(--slate); white-space: nowrap;
+  }
+  .stream-body { padding: 0 24px 20px; }
+  .stream-desc { font-size: 14px; color: var(--slate); line-height: 1.65; margin-bottom: 14px; }
+  .stream-items { display: flex; flex-wrap: wrap; gap: 8px; }
+  .sitem {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 12px; color: var(--ink-mid);
+    background: var(--mist);
+    border-radius: 6px; padding: 5px 11px;
+  }
+  .sitem-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+
+  /* events card accent colors */
+  .stream-card.b2b { border-color: rgba(14,17,23,0.25); }
+  .stream-card.b2b .stream-header { background: var(--ink); }
+  .stream-card.b2b .stream-title { color: white; }
+  .stream-card.b2b .stream-est { color: var(--volt); }
+
+  .stream-card.events { border-color: var(--amber); }
+  .stream-card.events .stream-header { background: var(--amber-light); }
+
+  /* events detail */
+  .event-example {
+    background: white;
+    border: 1.5px solid var(--amber);
+    border-radius: var(--radius-lg);
+    padding: 22px 24px;
+    margin-top: 16px;
+    display: flex; gap: 20px; align-items: flex-start;
+  }
+  .event-thumb {
+    width: 64px; height: 64px;
+    border-radius: 12px;
+    background: var(--ink);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    font-size: 28px;
+  }
+  .event-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--amber); margin-bottom: 4px;
+  }
+  .event-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 18px; font-weight: 800;
+    text-transform: uppercase; color: var(--ink);
+    margin-bottom: 6px;
+  }
+  .event-desc { font-size: 13px; color: var(--slate); line-height: 1.6; }
+  .event-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+  .etag {
+    font-size: 11px; font-weight: 500;
+    padding: 3px 9px; border-radius: 5px;
+    background: var(--amber-light); color: #7A4100;
+  }
+
+  .viability-bar {
+    background: var(--mist);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    margin-top: 20px;
+    display: flex; gap: 0; align-items: stretch;
+    flex-wrap: wrap;
+  }
+  .vbar-item { flex: 1; min-width: 140px; text-align: center; padding: 0 16px; }
+  .vbar-item + .vbar-item { border-left: 1px solid var(--border); }
+  .vbar-val { font-family: 'Barlow Condensed', sans-serif; font-size: 26px; font-weight: 800; color: var(--ink); line-height: 1; margin-bottom: 4px; }
+  .vbar-label { font-size: 12px; color: var(--slate); }
+
+  .nicho-block {
+    background: linear-gradient(135deg, #F0FFF4 0%, #F5FFEB 100%);
+    border: 1.5px solid var(--volt-dark);
+    border-radius: var(--radius-xl);
+    padding: 28px 32px;
+    margin-top: 20px;
+  }
+  .nicho-header {
+    display: flex; align-items: center; gap: 14px; margin-bottom: 20px;
+  }
+  .nicho-badge {
+    background: var(--ink); color: var(--volt);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    padding: 5px 14px; border-radius: 8px;
+  }
+  .nicho-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 22px; font-weight: 800;
+    text-transform: uppercase; color: var(--ink);
+  }
+  .nicho-desc { font-size: 14px; color: var(--slate); line-height: 1.65; margin-bottom: 20px; }
+  .nicho-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px,1fr)); gap: 12px; }
+  .nicho-card {
+    background: white; border-radius: 12px;
+    padding: 16px; border: 1px solid rgba(157,202,0,0.3);
+    text-align: center;
+  }
+  .nicho-icon { font-size: 24px; margin-bottom: 8px; }
+  .nicho-card-title { font-family: 'Barlow Condensed', sans-serif; font-size: 15px; font-weight: 700; text-transform: uppercase; color: var(--ink); margin-bottom: 4px; }
+  .nicho-card-body { font-size: 12px; color: var(--slate); line-height: 1.5; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 640px) {
+    .hero { padding: 40px 24px; }
+    .main { padding: 40px 20px; }
+    .pillars { grid-template-columns: 1fr; }
+    .rating-grid { grid-template-columns: 1fr; }
+    .ine-notes { grid-template-columns: 1fr; }
+    .ine-flow { flex-direction: column; }
+    .ine-arrow { transform: rotate(90deg); align-self: flex-start; margin-left: 50%; }
+    .women-card { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">
+    <span></span>
+    SportMatch — Deporte funcional CDMX
+  </div>
+  <h1>Modelo de<br>negocio &<br><em>Seguridad</em></h1>
+  <p class="hero-sub">Plan completo de SportMatch: tres fuentes de ingresos, eventos deportivos patrocinados, nicho de deporte funcional, y sistema de confianza de 6 capas incluyendo verificación INE. Presentación para equipo fundador.</p>
+  <div class="threat-badge">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FF7B7C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+    <strong>Enfoque inicial:</strong> deporte funcional (CrossFit, calistenia, HIIT) — CDMX, La Condesa y Roma Norte
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- MODELO DE NEGOCIO -->
+  <div class="sec-header">
+    <div class="sec-num">01</div>
+    <div class="sec-title">Modelo de negocio — 4 fuentes de ingresos</div>
+    <div class="sec-line"></div>
+  </div>
+
+  <div class="biz-intro">
+    <div class="biz-intro-text" style="flex:1">
+      <h3>¿Cómo gana<br>dinero <span>SportMatch?</span></h3>
+      <p>Modelo híbrido: ingresos B2B de establecimientos deportivos + ingresos B2C de usuarios (freemium + plan Pro) + eventos patrocinados. El foso competitivo está en la comunidad local activa, no en la tecnología.</p>
+    </div>
+    <div class="biz-metrics">
+      <div class="biz-metric">
+        <div class="biz-metric-val">$375K</div>
+        <div class="biz-metric-label">MXN/mes objetivo año 1</div>
+      </div>
+      <div class="biz-metric-divider"></div>
+      <div class="biz-metric">
+        <div class="biz-metric-val">4</div>
+        <div class="biz-metric-label">fuentes de ingresos</div>
+      </div>
+      <div class="biz-metric-divider"></div>
+      <div class="biz-metric">
+        <div class="biz-metric-val">500</div>
+        <div class="biz-metric-label">sesiones/mes para viabilidad</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="revenue-streams">
+
+    <!-- B2B -->
+    <div class="stream-card b2b">
+      <div class="stream-header">
+        <span class="stream-badge sb-b2b">B2B</span>
+        <div class="stream-title">Promoción de espacios deportivos</div>
+        <div class="stream-est">$3K–$15K MXN / mes por cliente</div>
+      </div>
+      <div class="stream-body">
+        <div class="stream-desc">Gimnasios, boxes de CrossFit, canchas y estudios pagan para aparecer destacados en el mapa cuando alguien busca en su zona. Dos modalidades: paquete mensual de visibilidad (pin destacado + badge "Asociado") y sesiones patrocinadas (el gym publica una clase de prueba gratuita que aparece en el feed de usuarios afines).</div>
+        <div class="stream-items">
+          <div class="sitem"><div class="sitem-dot" style="background:var(--volt-dark)"></div>Pin destacado en mapa</div>
+          <div class="sitem"><div class="sitem-dot" style="background:var(--volt-dark)"></div>Badge "Espacio verificado"</div>
+          <div class="sitem"><div class="sitem-dot" style="background:var(--volt-dark)"></div>Sesiones de prueba patrocinadas</div>
+          <div class="sitem"><div class="sitem-dot" style="background:var(--volt-dark)"></div>Dashboard de métricas</div>
+          <div class="sitem"><div class="sitem-dot" style="background:var(--volt-dark)"></div>20 clientes → $300K/mes</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- EVENTOS PATROCINADOS -->
+    <div class="stream-card events">
+      <div class="stream-header">
+        <span class="stream-badge sb-event">Nuevo</span>
+        <div class="stream-title">Eventos deportivos patrocinados</div>
+        <div class="stream-est">$5K–$40K MXN / evento</div>
+      </div>
+      <div class="stream-body">
+        <div class="stream-desc">Un gym o box patrocina un evento en la app — aporta sus instalaciones, equipo e instructores. SportMatch coordina los participantes vía matching, gestiona inscripciones y da visibilidad. El gym gana nuevos prospectos calificados; los usuarios tienen acceso a instalaciones premium de forma gratuita o a precio reducido. El modelo de negocio es comisión + fee de visibilidad.</div>
+
+        <div class="event-example">
+          <div class="event-thumb">🏋️</div>
+          <div>
+            <div class="event-label">Ejemplo real — Evento patrocinado</div>
+            <div class="event-title">CrossFit Abierto — Box Condesa</div>
+            <div class="event-desc">Box Alpha Condesa patrocina un WOD grupal de 90 min para 20 participantes. El box pone las instalaciones, barras, pesas y un coach certificado. SportMatch hace el matching por nivel (RX, Scaled, Beginner), coordina horarios y envía notificaciones por WhatsApp. Los asistentes pagan $0 o $50 MXN simbólico. El box capta datos de 20 prospectos calificados y cobra visibilidad premium en la app por 30 días.</div>
+            <div class="event-tags">
+              <span class="etag">Nicho funcional</span>
+              <span class="etag">20 participantes por evento</span>
+              <span class="etag">Matching por nivel RX/Scaled</span>
+              <span class="etag">Box aporta instalaciones</span>
+              <span class="etag">Notificación WhatsApp</span>
+              <span class="etag">Coach certificado incluido</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="stream-items" style="margin-top:14px">
+          <div class="sitem"><div class="sitem-dot" style="background:var(--amber)"></div>Fee de organización al gym: $5K–$15K</div>
+          <div class="sitem"><div class="sitem-dot" style="background:var(--amber)"></div>Visibilidad premium 30 días</div>
+          <div class="sitem"><div class="sitem-dot" style="background:var(--amber)"></div>Comisión 15% en inscripciones</div>
+          <div class="sitem"><div class="sitem-dot" style="background:var(--amber)"></div>2 eventos/mes → escala rápido</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- B2C FREE -->
+    <div class="stream-card" style="border-color:var(--teal)">
+      <div class="stream-header" style="background:var(--teal-light)">
+        <span class="stream-badge sb-free">B2C — Free</span>
+        <div class="stream-title">Plan gratuito con anuncios</div>
+        <div class="stream-est">RPM $80–$150 MXN · escala con MAU</div>
+      </div>
+      <div class="stream-body">
+        <div class="stream-desc" style="margin-top:14px">Acceso completo a matching y mapa. Anuncios contextuales de marcas deportivas (Asics, Under Armour, Powerade, Rogue) y establecimientos locales. El inventario publicitario es premium porque el usuario está activo y en contexto deportivo — no scrolleando sin objetivo. CPM más alto que redes sociales genéricas.</div>
+        <div class="stream-items">
+          <div class="sitem"><div class="sitem-dot" style="background:var(--teal)"></div>Matching + mapa completo</div>
+          <div class="sitem"><div class="sitem-dot" style="background:var(--teal)"></div>Anuncios contextuales deportivos</div>
+          <div class="sitem"><div class="sitem-dot" style="background:var(--teal)"></div>Requiere 50K+ MAU para escalar</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- B2C PRO -->
+    <div class="stream-card" style="border-color:#9B6DFF">
+      <div class="stream-header" style="background:#F0EAFF">
+        <span class="stream-badge sb-pro">B2C — Pro</span>
+        <div class="stream-title">Plan premium — sin anuncios + matching avanzado</div>
+        <div class="stream-est">$99–$149 MXN/mes · 500 usuarios = $75K/mes</div>
+      </div>
+      <div class="stream-body">
+        <div class="stream-desc" style="margin-top:14px">Sin publicidad. Matching con mayor granularidad: pace exacto, nivel de conversación, objetivos de entrenamiento, historial de compañeros con rating. Notificaciones anticipadas antes que usuarios Free. Acceso prioritario a eventos patrocinados y lista de espera preferencial.</div>
+        <div class="stream-items">
+          <div class="sitem"><div class="sitem-dot" style="background:#9B6DFF)"></div>Cero anuncios</div>
+          <div class="sitem"><div class="sitem-dot" style="background:#9B6DFF"></div>Matching por objetivos de entrenamiento</div>
+          <div class="sitem"><div class="sitem-dot" style="background:#9B6DFF"></div>Acceso prioritario a eventos</div>
+          <div class="sitem"><div class="sitem-dot" style="background:#9B6DFF"></div>Historial y estadísticas avanzadas</div>
+          <div class="sitem"><div class="sitem-dot" style="background:#9B6DFF"></div>Notificaciones anticipadas</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="viability-bar">
+    <div class="vbar-item">
+      <div class="vbar-val">20</div>
+      <div class="vbar-label">clientes B2B para $300K/mes</div>
+    </div>
+    <div class="vbar-item">
+      <div class="vbar-val">2</div>
+      <div class="vbar-label">eventos/mes para $30K adicionales</div>
+    </div>
+    <div class="vbar-item">
+      <div class="vbar-val">500</div>
+      <div class="vbar-label">usuarios Pro para $75K/mes</div>
+    </div>
+    <div class="vbar-item">
+      <div class="vbar-val">$405K</div>
+      <div class="vbar-label">MXN/mes total año 1 (objetivo)</div>
+    </div>
+  </div>
+
+  <!-- NICHO FUNCIONAL -->
+  <div class="sec-header" style="margin-top:56px">
+    <div class="sec-num">02</div>
+    <div class="sec-title">Nicho inicial — Deporte funcional</div>
+    <div class="sec-line"></div>
+  </div>
+
+  <div class="nicho-block">
+    <div class="nicho-header">
+      <div class="nicho-badge">Enfoque año 1</div>
+      <div class="nicho-title">¿Por qué deporte funcional primero?</div>
+    </div>
+    <div class="nicho-desc">El deporte funcional (CrossFit, calistenia, HIIT, kettlebell) tiene la comunidad más activa en CDMX, la mayor densidad de boxes y studios en Condesa/Roma/Polanco, y los usuarios más comprometidos en términos de frecuencia (3–5 sesiones por semana). Es el nicho con mayor disposición a pagar, mayor facilidad para el matching por nivel, y donde el "no show" duele más — lo que hace que la propuesta de valor de SportMatch sea más clara y urgente.</div>
+    <div class="nicho-grid">
+      <div class="nicho-card">
+        <div class="nicho-icon">🏋️</div>
+        <div class="nicho-card-title">CrossFit / WOD</div>
+        <div class="nicho-card-body">Matching por nivel RX, Scaled o Beginner. Eventos patrocinados por boxes.</div>
+      </div>
+      <div class="nicho-card">
+        <div class="nicho-icon">🤸</div>
+        <div class="nicho-card-title">Calistenia</div>
+        <div class="nicho-card-body">Parques equipados de CDMX. Matching por habilidad: front lever, muscle-up, pistol squat.</div>
+      </div>
+      <div class="nicho-card">
+        <div class="nicho-icon">⚡</div>
+        <div class="nicho-card-title">HIIT / Bootcamp</div>
+        <div class="nicho-card-body">Alta frecuencia semanal, ideal para comunidad recurrente. Intensidad como filtro.</div>
+      </div>
+      <div class="nicho-card">
+        <div class="nicho-icon">🎯</div>
+        <div class="nicho-card-title">Kettlebell / Fuerza</div>
+        <div class="nicho-card-body">Nicho pequeño pero muy comprometido. Usuarios Pro por naturaleza.</div>
+      </div>
+    </div>
+    <div style="margin-top:16px;padding:14px 18px;background:white;border-radius:10px;border:1px solid rgba(157,202,0,0.4);font-size:13px;color:var(--slate)">
+      <strong style="color:var(--ink)">Expansión futura:</strong> Una vez consolidado el nicho funcional con matching confiable en 2–3 zonas de CDMX, expandir a running, tenis, yoga y fútbol. El modelo de matching por nivel es el mismo — solo cambian los filtros.
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- SECURITY SECTION — renumbered -->
+  <div class="sec-header">
+    <div style="background:var(--red);color:white;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;padding:3px 10px;border-radius:4px;">Riesgo crítico</div>
+    <div class="sec-title">Seguridad y confianza entre desconocidos</div>
+    <div class="sec-line"></div>
+  </div>
+
+  <div class="risk-banner">
+    <div class="risk-icon-wrap">
+      <svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+    </div>
+    <div>
+      <div class="risk-banner-title">Una mala experiencia viral = cierre del producto</div>
+      <div class="risk-banner-body">No hay segunda oportunidad en early stage. El sistema de confianza es la condición de entrada al mercado, especialmente para el segmento femenino que representa el 60%+ del TAM en deporte funcional. Mitigación: 6 capas de verificación, comenzando desde el número de teléfono hasta verificación INE.</div>
+    </div>
+  </div>
+
+  <!-- VERIFICATION LAYERS -->
+  <div class="sec-header">
+    <div class="sec-num">03</div>
+    <div class="sec-title">Sistema de verificación por capas</div>
+    <div class="sec-line"></div>
+  </div>
+
+  <div class="layers-grid">
+    <div class="layer-card">
+      <div class="layer-step"><div class="step-dot">1</div> Obligatorio</div>
+      <div class="layer-card-title">Número de teléfono</div>
+      <div class="layer-card-body">OTP por SMS o WhatsApp. Bloquea bots y cuentas múltiples. Es el mínimo para crear perfil. Sin esto, la app no existe para ti.</div>
+      <span class="layer-tag tag-req">✓ Requerido para usar la app</span>
+    </div>
+
+    <div class="layer-card">
+      <div class="layer-step"><div class="step-dot">2</div> Obligatorio</div>
+      <div class="layer-card-title">Foto real de perfil</div>
+      <div class="layer-card-body">Foto frontal, no avatar. El algoritmo detecta si es selfie real vs imagen de internet. Revisión manual en casos dudosos. Se muestra siempre al compañero potencial.</div>
+      <span class="layer-tag tag-req">✓ Requerido para publicar sesión</span>
+    </div>
+
+    <div class="layer-card primary">
+      <div class="layer-step"><div class="step-dot">3</div> Verificación extra</div>
+      <div class="layer-card-title">INE / Identificación oficial</div>
+      <div class="layer-card-body">El usuario sube foto de su INE o pasaporte. OCR extrae nombre completo y CURP. Se valida contra el padrón del INE (API pública del INE). No se almacena la imagen — solo el resultado: "verificado ✓" con nombre inicial.</div>
+      <span class="layer-tag tag-new">★ Diferenciador clave de seguridad</span>
+    </div>
+
+    <div class="layer-card">
+      <div class="layer-step"><div class="step-dot">4</div> Progresivo</div>
+      <div class="layer-card-title">Rating post-sesión</div>
+      <div class="layer-card-body">Después de cada sesión, ambos participantes se califican. El rating se construye con el tiempo — usuarios nuevos tienen menos visibilidad hasta acumular reputación.</div>
+      <span class="layer-tag tag-opt">Opcional — aumenta visibilidad</span>
+    </div>
+
+    <div class="layer-card">
+      <div class="layer-step"><div class="step-dot">5</div> Contextual</div>
+      <div class="layer-card-title">Modo "Solo Mujeres"</div>
+      <div class="layer-card-body">Las usuarias pueden activar que solo reciban y aparezcan en matches con otras mujeres. Verificación INE obligatoria para acceder a este modo.</div>
+      <span class="layer-tag tag-opt">Toggle en perfil — verificación INE requerida</span>
+    </div>
+
+    <div class="layer-card">
+      <div class="layer-step"><div class="step-dot">6</div> Protección</div>
+      <div class="layer-card-title">Chat antes de revelar ubicación</div>
+      <div class="layer-card-body">La ubicación exacta del punto de encuentro solo se revela cuando ambas partes confirman via chat in-app. Hasta ese momento, solo se muestra zona general (ej. "Roma Norte").</div>
+      <span class="layer-tag tag-req">✓ Por diseño — no modificable</span>
+    </div>
+  </div>
+
+  <!-- INE DEEP DIVE -->
+  <div class="sec-header">
+    <div class="sec-num">04</div>
+    <div class="sec-title">Verificación INE — Cómo funciona</div>
+    <div class="sec-line"></div>
+  </div>
+
+  <div class="ine-block">
+    <div class="ine-header">
+      <div class="ine-badge">INE / CURP</div>
+      <div>
+        <div class="ine-title">Flujo de verificación de identidad oficial</div>
+        <div class="ine-subtitle">Integración con el padrón electoral del INE — sin almacenar datos sensibles</div>
+      </div>
+    </div>
+
+    <div class="ine-flow">
+      <div class="ine-step">
+        <div class="ine-step-num">01</div>
+        <div class="ine-step-label">Captura</div>
+        <div class="ine-step-body">El usuario fotografía frente y reverso de su INE o pasaporte desde la app. Guía visual que asegura buena calidad de imagen.</div>
+      </div>
+      <div class="ine-arrow">→</div>
+      <div class="ine-step">
+        <div class="ine-step-num">02</div>
+        <div class="ine-step-label">OCR + Extracción</div>
+        <div class="ine-step-body">OCR extrae nombre completo, CURP y clave de elector. Se puede usar AWS Textract o Google Vision con modelo entrenado para INE.</div>
+      </div>
+      <div class="ine-arrow">→</div>
+      <div class="ine-step">
+        <div class="ine-step-num">03</div>
+        <div class="ine-step-label">Validación INE</div>
+        <div class="ine-step-body">Se consulta el servicio de verificación del INE o CURP via RENAPO/CURP API del gobierno. Confirma que los datos son válidos y reales.</div>
+      </div>
+      <div class="ine-arrow">→</div>
+      <div class="ine-step">
+        <div class="ine-step-num">04</div>
+        <div class="ine-step-label">Badge + Borrado</div>
+        <div class="ine-step-body">Se asigna badge "Verificado INE ✓" al perfil. La imagen de la INE se borra inmediatamente. Solo se guarda el resultado: nombre, inicial y estado de verificación.</div>
+      </div>
+    </div>
+
+    <div class="ine-notes">
+      <div class="ine-note">
+        <div class="ine-note-icon" style="background:#EBF9D4;">🔒</div>
+        <div>
+          <div class="ine-note-title">Privacidad por diseño</div>
+          <div class="ine-note-body">Nunca se almacena la imagen del INE en servidores propios. Se procesa en tránsito y se elimina. Solo el resultado booleano persiste.</div>
+        </div>
+      </div>
+      <div class="ine-note">
+        <div class="ine-note-icon" style="background:#FEF6E7;">⚡</div>
+        <div>
+          <div class="ine-note-title">Tiempo de verificación</div>
+          <div class="ine-note-body">30-90 segundos en condiciones normales. Si la API del INE falla, el usuario queda en estado "Pendiente de verificación" con acceso limitado.</div>
+        </div>
+      </div>
+      <div class="ine-note">
+        <div class="ine-note-icon" style="background:#E0F7F5;">📋</div>
+        <div>
+          <div class="ine-note-title">Marco legal</div>
+          <div class="ine-note-body">Requiere aviso de privacidad conforme a la LFPDPPP. El usuario consiente explícitamente el uso de sus datos para este único fin. Se puede usar proveedor como Metamap o Truora.</div>
+        </div>
+      </div>
+      <div class="ine-note">
+        <div class="ine-note-icon" style="background:#FEF0F0;">🛡️</div>
+        <div>
+          <div class="ine-note-title">Qué pasa si alguien falla</div>
+          <div class="ine-note-body">No puede usar el Modo Solo Mujeres. No puede publicar en zonas con alta demanda. Su perfil muestra "Sin verificación de identidad" — visible para otros.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TRUST PILLARS -->
+  <div class="sec-header">
+    <div class="sec-num">05</div>
+    <div class="sec-title">Los 4 pilares de confianza</div>
+    <div class="sec-line"></div>
+  </div>
+
+  <div class="pillars">
+    <div class="pillar">
+      <div class="pillar-icon pi-teal">🆔</div>
+      <div class="pillar-title">Identidad verificable</div>
+      <div class="pillar-body">Teléfono + foto real + INE crea una tríada de identidad que hace extremadamente difícil operar de forma anónima con malas intenciones. El costo de crear una cuenta falsa es muy alto.</div>
+      <div class="pillar-tags">
+        <span class="ptag">OTP SMS</span>
+        <span class="ptag">Foto selfie</span>
+        <span class="ptag">INE + CURP</span>
+      </div>
+    </div>
+
+    <div class="pillar">
+      <div class="pillar-icon pi-green">⭐</div>
+      <div class="pillar-title">Reputación acumulada</div>
+      <div class="pillar-body">El sistema de ratings es el sistema inmune de la comunidad. Un usuario con 50 sesiones y rating 4.8 es auto-moderado por la comunidad. Los usuarios nuevos tienen menor visibilidad — incentiva el buen comportamiento desde el primer día.</div>
+      <div class="pillar-tags">
+        <span class="ptag">Rating post-sesión</span>
+        <span class="ptag">Historial público</span>
+        <span class="ptag">Badges de antigüedad</span>
+      </div>
+    </div>
+
+    <div class="pillar">
+      <div class="pillar-icon pi-amber">💬</div>
+      <div class="pillar-title">Revelación progresiva</div>
+      <div class="pillar-body">La ubicación exacta es lo más sensible. El flujo de información es escalonado: zona general → chat → confirmación mutua → punto exacto. Nadie conoce tu dirección de salida si no hay confirmación de ambas partes.</div>
+      <div class="pillar-tags">
+        <span class="ptag">Chat in-app primero</span>
+        <span class="ptag">Zona general → exacta</span>
+        <span class="ptag">Confirmación mutua</span>
+      </div>
+    </div>
+
+    <div class="pillar">
+      <div class="pillar-icon pi-ink">🚨</div>
+      <div class="pillar-title">Reporte y consecuencias</div>
+      <div class="pillar-body">Sistema de reporte en 2 taps disponible durante y después de la sesión. Tres reportes = revisión manual inmediata. Un reporte validado = suspensión. Las consecuencias son visibles — actúa como disuasivo efectivo.</div>
+      <div class="pillar-tags">
+        <span class="ptag">Reporte en 2 taps</span>
+        <span class="ptag">Revisión en 24h</span>
+        <span class="ptag">Suspensión inmediata</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- RATING SYSTEM -->
+  <div class="sec-header">
+    <div class="sec-num">06</div>
+    <div class="sec-title">Sistema de ratings post-sesión</div>
+    <div class="sec-line"></div>
+  </div>
+
+  <div class="rating-section">
+    <div class="rating-header">
+      <h3>Qué se califica — y por qué importa</h3>
+      <p>Aparece 2 horas después de la sesión</p>
+    </div>
+    <div class="rating-grid">
+      <div class="rating-card">
+        <div class="rating-stars">★★★★★</div>
+        <div class="rating-label">Puntualidad</div>
+        <div class="rating-body">¿Llegó a tiempo? El "no show" sin aviso es la principal causa de abandono del producto. Se pondera x1.5 en el score.</div>
+      </div>
+      <div class="rating-card">
+        <div class="rating-stars">★★★★★</div>
+        <div class="rating-label">Nivel declarado</div>
+        <div class="rating-body">¿El nivel (pace, intensidad) correspondió al perfil? Calibra automáticamente el matching futuro de esa persona.</div>
+      </div>
+      <div class="rating-card">
+        <div class="rating-stars">★★★★★</div>
+        <div class="rating-label">Respeto y trato</div>
+        <div class="rating-body">¿Se sintió una experiencia segura y respetuosa? Este criterio activa revisión manual si es consistentemente bajo.</div>
+      </div>
+    </div>
+    <div class="rating-consequence">
+      <span style="font-size:18px;">⚠️</span>
+      <span>Usuario con rating &lt; 3.5 en "Respeto y trato" después de 5+ sesiones → suspensión automática pendiente de revisión. Sin excepciones.</span>
+    </div>
+  </div>
+
+  <!-- WOMEN MODE -->
+  <div class="sec-header">
+    <div class="sec-num">07</div>
+    <div class="sec-title">Modo "Solo Mujeres"</div>
+    <div class="sec-line"></div>
+  </div>
+
+  <div class="women-card">
+    <div class="women-icon-wrap">♀</div>
+    <div style="flex:1">
+      <div class="women-title">Un espacio exclusivo — no un gimmick</div>
+      <div class="women-body">Las mujeres representan el 60%+ del TAM en yoga, pilates y running recreativo. Y son las que más barreras perciben al hacer deporte con desconocidos. El Modo Solo Mujeres no es una opción cosmética — es un requisito de producto para este segmento. Requiere verificación INE completa. Las sesiones en este modo muestran un escudo morado visible para todas las participantes. Solo disponible para usuarias con verificación de identidad completada.</div>
+      <div class="women-stats">
+        <div class="wstat">
+          <div class="wstat-val">60%+</div>
+          <div class="wstat-label">del TAM yoga / pilates / running</div>
+        </div>
+        <div class="wstat">
+          <div class="wstat-val">INE</div>
+          <div class="wstat-label">verificación obligatoria para activarlo</div>
+        </div>
+        <div class="wstat">
+          <div class="wstat-val">🛡</div>
+          <div class="wstat-label">badge visible en sesión</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHAT PREVIEW -->
+  <div class="sec-header">
+    <div class="sec-num">08</div>
+    <div class="sec-title">Chat protegido antes de confirmar ubicación</div>
+    <div class="sec-line"></div>
+  </div>
+
+  <div class="chat-preview">
+    <div class="chat-header">
+      <div class="chat-avatar">MV</div>
+      <div>
+        <div class="chat-name">Mariana V.</div>
+        <div class="chat-verified">✓ Verificada INE · ★ 4.9 · 23 sesiones</div>
+      </div>
+    </div>
+
+    <div class="chat-lock-notice">
+      🔒 La ubicación exacta se revela cuando ambas confirmen. Zona actual: <strong style="margin-left:4px">Roma Norte</strong>
+    </div>
+
+    <div class="bubble">
+      <div class="bubble-av bav-teal">MV</div>
+      <div class="bubble-text">Hola! Vi tu sesión de running mañana 7am. Yo corro pace 5:45, ¿está bien con tu nivel?</div>
+    </div>
+
+    <div class="bubble right">
+      <div class="bubble-text">Sí, perfecto! Normalmente salgo por Álvaro Obregón. ¿Tú de qué zona?</div>
+      <div class="bubble-av bav-volt">Tú</div>
+    </div>
+
+    <div class="bubble">
+      <div class="bubble-av bav-teal">MV</div>
+      <div class="bubble-text">De Tamaulipas casi Sonora. Podemos quedar en Parque México que está a mitad 🏃‍♀️</div>
+    </div>
+
+    <button class="chat-confirm-btn">
+      <span class="lock">🔒</span> Confirmar punto de encuentro
+    </button>
+  </div>
+
+  <!-- SUMMARY TABLE -->
+  <div class="sec-header">
+    <div class="sec-num">09</div>
+    <div class="sec-title">Resumen del sistema de seguridad</div>
+    <div class="sec-line"></div>
+  </div>
+
+  <div style="border:1px solid var(--border); border-radius:var(--radius-lg); overflow:hidden;">
+    <table class="summary-table">
+      <thead>
+        <tr>
+          <th>Capa de seguridad</th>
+          <th>Estado</th>
+          <th>Impacto en confianza</th>
+          <th>Aplica para</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Teléfono + OTP</strong><br><span style="color:var(--slate);font-size:12px;">Verificación básica de persona real</span></td>
+          <td><span class="status-pill sp-req">Requerido</span></td>
+          <td><div class="impact-bar"><div class="ibar fill"></div><div class="ibar fill"></div><div class="ibar fill"></div><div class="ibar empty"></div><div class="ibar empty"></div></div></td>
+          <td style="font-size:12px;color:var(--slate)">Todos los usuarios</td>
+        </tr>
+        <tr>
+          <td><strong>Foto de perfil real</strong><br><span style="color:var(--slate);font-size:12px;">Selfie frontal, no avatar</span></td>
+          <td><span class="status-pill sp-req">Requerido</span></td>
+          <td><div class="impact-bar"><div class="ibar fill"></div><div class="ibar fill"></div><div class="ibar fill"></div><div class="ibar fill"></div><div class="ibar empty"></div></div></td>
+          <td style="font-size:12px;color:var(--slate)">Para publicar sesión</td>
+        </tr>
+        <tr>
+          <td><strong>Verificación INE / CURP</strong><br><span style="color:var(--slate);font-size:12px;">Identidad oficial confirmada</span></td>
+          <td><span class="status-pill sp-new">★ Nuevo</span></td>
+          <td><div class="impact-bar"><div class="ibar fill"></div><div class="ibar fill"></div><div class="ibar fill"></div><div class="ibar fill"></div><div class="ibar fill"></div></div></td>
+          <td style="font-size:12px;color:var(--slate)">Modo mujeres + zonas premium</td>
+        </tr>
+        <tr>
+          <td><strong>Rating post-sesión</strong><br><span style="color:var(--slate);font-size:12px;">Reputación acumulada por la comunidad</span></td>
+          <td><span class="status-pill sp-opt">Progresivo</span></td>
+          <td><div class="impact-bar"><div class="ibar fill"></div><div class="ibar fill"></div><div class="ibar fill"></div><div class="ibar fill"></div><div class="ibar fill"></div></div></td>
+          <td style="font-size:12px;color:var(--slate)">Todos los usuarios post-sesión</td>
+        </tr>
+        <tr>
+          <td><strong>Modo Solo Mujeres</strong><br><span style="color:var(--slate);font-size:12px;">Sesiones exclusivas verificadas</span></td>
+          <td><span class="status-pill sp-opt">Opcional</span></td>
+          <td><div class="impact-bar"><div class="ibar fill"></div><div class="ibar fill"></div><div class="ibar fill"></div><div class="ibar fill"></div><div class="ibar fill"></div></div></td>
+          <td style="font-size:12px;color:var(--slate)">Usuarias con INE verificada</td>
+        </tr>
+        <tr>
+          <td><strong>Chat antes de ubicación</strong><br><span style="color:var(--slate);font-size:12px;">Revelación progresiva del punto de encuentro</span></td>
+          <td><span class="status-pill sp-req">Requerido</span></td>
+          <td><div class="impact-bar"><div class="ibar fill"></div><div class="ibar fill"></div><div class="ibar fill"></div><div class="ibar fill"></div><div class="ibar empty"></div></div></td>
+          <td style="font-size:12px;color:var(--slate)">Toda sesión con desconocido</td>
+        </tr>
+        <tr>
+          <td><strong>Sistema de reportes</strong><br><span style="color:var(--slate);font-size:12px;">Moderación comunitaria + manual</span></td>
+          <td><span class="status-pill sp-req">Siempre activo</span></td>
+          <td><div class="impact-bar"><div class="ibar fill"></div><div class="ibar fill"></div><div class="ibar fill"></div><div class="ibar empty"></div><div class="ibar empty"></div></div></td>
+          <td style="font-size:12px;color:var(--slate)">Todos los usuarios</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="footer-cta">
+    <div>
+      <h3>Siguiente paso:<br><span>Mockup de la app</span></h3>
+      <p>Pantalla de mapa · Evento patrocinado · Perfil verificado · Publicar sesión</p>
+    </div>
+    <button class="cta-btn">Ver mockup →</button>
+  </div>
+
+</div>
+
+</body>
+</html>
