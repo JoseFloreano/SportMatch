@@ -1,0 +1,61 @@
+name: sportmatch
+description: Coordina sesiones deportivas con personas compatibles en tu zona.
+version: 1.0.0+1
+publish_to: none
+
+environment:
+  sdk: ">=3.3.0 <4.0.0"
+  flutter: ">=3.22.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # ── Backend ─────────────────────────────────────────────
+  supabase_flutter: ^2.5.6 # Supabase SDK (auth + db + realtime + functions)
+
+  # ── Push notifications ─────────────────────────────────────
+  firebase_core: ^3.6.0
+  firebase_messaging: ^15.1.3
+
+  # ── Estado (State Management) ────────────────────────────
+  flutter_riverpod: ^2.5.1 # Provider de estado
+  riverpod_annotation: ^2.3.5 # Anotaciones para code gen
+
+  # ── Navegación ───────────────────────────────────────────
+  go_router: ^14.2.7 # Router declarativo
+
+  # ── Mapa ─────────────────────────────────────────────────
+  flutter_map: ^7.0.2 # Mapa OpenStreetMap (MVP sin costo)
+  latlong2: ^0.9.1 # Coordenadas lat/lng
+
+  # ── Ubicación ────────────────────────────────────────────
+  geolocator: ^13.0.3 # GPS y permisos
+  geocoding: ^3.0.0 # Coordenadas → nombre de lugar
+
+  # ── UI ───────────────────────────────────────────────────
+  google_fonts: ^6.2.1 # Barlow + Barlow Condensed
+  cached_network_image: ^3.4.1 # Imágenes con caché (avatares)
+  shimmer: ^3.0.0 # Loading skeleton
+  modal_bottom_sheet: ^3.0.0 # Bottom sheets para sesiones
+  intl: ^0.19.0 # Formateo de fechas en español
+
+  # ── Utilidades ───────────────────────────────────────────
+  uuid: ^4.4.0 # Generar UUIDs
+  url_launcher: ^6.3.0 # Abrir WhatsApp externo (fallback)
+  share_plus: ^10.0.0 # Compartir sesión
+  image_picker: ^1.1.2 # Avatar del perfil
+  cupertino_icons: ^1.0.8
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+  build_runner: ^2.4.11
+  riverpod_generator: ^2.4.3
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/images/
+    - assets/icons/
