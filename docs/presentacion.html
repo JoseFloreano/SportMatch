@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SportMatch — Presentación Toku 2025</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --p:#7C3AED;--pl:#EDE9FE;--pm:#A78BFA;--pd:#5B21B6;
+  --sm:#84CC16;--smd:#4D7C0F;--sml:#F0FDF4;
+  --g:#059669;--gl:#D1FAE5;
+  --amber:#F59E0B;--red:#EF4444;--blue:#3B82F6;
+  --gray-50:#F9FAFB;--gray-100:#F3F4F6;--gray-200:#E5E7EB;
+  --gray-300:#D1D5DB;--gray-400:#9CA3AF;--gray-500:#6B7280;
+  --gray-600:#4B5563;--gray-700:#374151;--gray-800:#1F2937;--gray-900:#111827;
+  --white:#FFFFFF;
+  --fn:'DM Sans',sans-serif;--fd:'Syne',sans-serif;
+}
+html,body{width:100%;height:100%;overflow:hidden;background:#0f0f1a;font-family:var(--fn)}
+
+/* ── DECK ── */
+#deck{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:12px}
+
+/* ── FRAME ── */
+#frame{
+  width:min(calc(100vw - 32px), calc((100vh - 80px) * 16/9));
+  height:min(calc(100vh - 80px), calc((100vw - 32px) * 9/16));
+  background:var(--white);
+  border-radius:14px;
+  overflow:hidden;
+  position:relative;
+  box-shadow:0 8px 48px rgba(0,0,0,.5);
+}
+
+/* ── SLIDES ── */
+.slide{display:none;flex-direction:column;width:100%;height:100%;position:absolute;inset:0;animation:fadeIn .3s ease}
+.slide.active{display:flex}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── HEADER ── */
+.hdr{display:flex;align-items:center;justify-content:space-between;padding:clamp(8px,1.5vh,14px) clamp(16px,2.5vw,32px);border-bottom:1px solid var(--gray-100);flex-shrink:0}
+.hdr-logos{display:flex;align-items:center;gap:clamp(8px,1.5vw,16px)}
+.hdr-divider{width:1px;height:22px;background:var(--gray-200)}
+.pill{font-size:clamp(8px,0.9vw,10px);font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--p);background:var(--pl);border-radius:99px;padding:3px 10px}
+.badge{display:flex;align-items:center;gap:6px;font-size:clamp(8px,0.9vw,11px);font-weight:600;color:var(--gray-500)}
+.bdot{width:6px;height:6px;border-radius:50%;background:var(--sm)}
+
+/* ── BODY ── */
+.body{flex:1;overflow:hidden;display:flex;flex-direction:column;padding:clamp(10px,1.8vh,18px) clamp(16px,2.5vw,32px) clamp(8px,1.4vh,14px)}
+
+/* ── COLS ── */
+.cols{display:grid;grid-template-columns:1fr 1fr;flex:1;overflow:hidden}
+.col-l{padding:0 clamp(12px,1.8vw,22px) 0 0;border-right:1px solid var(--gray-100);display:flex;flex-direction:column;justify-content:center;gap:clamp(5px,1vh,10px)}
+.col-r{padding:0 0 0 clamp(12px,1.8vw,22px);display:flex;flex-direction:column;justify-content:center;gap:clamp(5px,1vh,9px)}
+
+/* ── TYPOGRAPHY ── */
+.eyebrow{font-family:var(--fd);font-size:clamp(8px,0.9vw,10px);font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--p);margin-bottom:.2em}
+.display{font-family:var(--fd);font-size:clamp(16px,2.6vw,36px);line-height:1.1;color:var(--gray-900)}
+.display em{color:var(--p);font-style:normal}
+.display .sm{color:var(--sm)}
+.sub{font-size:clamp(9px,1.1vw,13px);line-height:1.6;color:var(--gray-600)}
+.sub strong{color:var(--gray-900);font-weight:600}
+
+/* ── STAT CARD ── */
+.stat{border:1px solid var(--gray-100);border-radius:10px;padding:clamp(7px,1.2vh,13px) clamp(10px,1.5vw,15px);display:flex;align-items:baseline;gap:9px;background:var(--white)}
+.stn{font-family:var(--fd);font-size:clamp(20px,2.8vw,34px);line-height:1;font-weight:800}
+.stn.p{color:var(--p)} .stn.g{color:var(--g)} .stn.sm{color:var(--sm)}
+.stl{font-size:clamp(8px,1vw,11.5px);color:var(--gray-600);font-weight:500;line-height:1.3}
+
+/* ── BARS ── */
+.bar-row{display:flex;align-items:center;gap:7px;margin-bottom:4px}
+.bar-pct{font-family:var(--fd);font-size:clamp(12px,1.6vw,17px);font-weight:700;color:var(--gray-900);min-width:40px}
+.bar-lbl{font-size:clamp(8px,0.95vw,11px);color:var(--gray-600);min-width:110px}
+.bar-bg{flex:1;height:5px;background:var(--gray-100);border-radius:99px;overflow:hidden}
+.bar-fill{height:100%;border-radius:99px;background:var(--p);transition:width 1s cubic-bezier(.4,0,.2,1)}
+
+/* ── DATA CARD ── */
+.dc{background:var(--gray-50);border-radius:10px;padding:clamp(7px,1.2vh,12px) clamp(10px,1.4vw,14px);display:flex;align-items:center;gap:11px;border:1px solid var(--gray-100)}
+.dcn{font-family:var(--fd);font-size:clamp(16px,2.2vw,26px);color:var(--p);min-width:58px;line-height:1;font-weight:800}
+.dct{font-size:clamp(9px,1.1vw,12px);font-weight:600;color:var(--gray-900);display:block;margin-bottom:1px}
+.dcs{font-size:clamp(7px,0.85vw,10px);color:var(--gray-400)}
+
+/* ── STEPS ── */
+.step{display:flex;align-items:flex-start;gap:9px;padding:clamp(7px,1.2vh,11px) clamp(9px,1.3vw,13px);border:1px solid var(--gray-100);border-radius:10px}
+.step-n{width:24px;height:24px;min-width:24px;border-radius:50%;background:var(--p);color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;font-family:var(--fd)}
+.step-t{font-size:clamp(9px,1.1vw,12px);font-weight:600;color:var(--gray-900);margin-bottom:1px}
+.step-d{font-size:clamp(8px,0.95vw,11px);color:var(--gray-600);line-height:1.4}
+
+/* ── INE ── */
+.ine{background:var(--gl);border:1px solid #6EE7B7;border-radius:10px;padding:clamp(7px,1.2vh,11px) clamp(9px,1.3vw,13px);display:flex;align-items:center;gap:9px}
+.ine-icon{width:30px;height:30px;min-width:30px;background:var(--g);border-radius:8px;display:flex;align-items:center;justify-content:center}
+.ine-icon svg{width:16px;height:16px;fill:#fff}
+.ine-t{font-size:clamp(9px,1.1vw,12px);font-weight:700;color:#065F46}
+.ine-s{font-size:clamp(7px,0.85vw,10px);color:#047857;line-height:1.35}
+
+/* ── DEMO BANNER ── */
+.demo{background:var(--p);border-radius:8px;padding:clamp(6px,1vh,9px) 13px;text-align:center;color:#fff;font-size:clamp(8px,1vw,11px);font-weight:700;letter-spacing:.06em;font-family:var(--fd)}
+
+/* ── CENTER ── */
+.center{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:clamp(10px,2vh,20px) clamp(24px,5vw,60px)}
+
+/* ── PILLARS ── */
+.pillars{display:flex;gap:clamp(8px,1.2vw,16px);margin-top:clamp(12px,2vh,20px)}
+.pillar{border:1px solid var(--gray-200);border-radius:10px;padding:clamp(9px,1.5vh,13px) clamp(12px,1.8vw,18px);font-size:clamp(8px,1vw,11.5px);font-weight:600;color:var(--gray-600);display:flex;flex-direction:column;align-items:center;gap:4px;flex:1;cursor:pointer;transition:border-color .2s,background .2s}
+.pillar:hover{border-color:var(--pm);background:var(--pl)}
+.pillar-icon{font-size:clamp(14px,2vw,20px)}
+
+/* ── VROW ── */
+.vrow{display:flex;align-items:center;gap:9px;padding:clamp(7px,1.1vh,11px) clamp(9px,1.3vw,13px);border:1px solid var(--gray-100);border-radius:10px}
+.vri{width:28px;height:28px;min-width:28px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:14px}
+.vrt{font-size:clamp(9px,1.1vw,12px);font-weight:600;color:var(--gray-900);display:block;margin-bottom:1px}
+.vrs{font-size:clamp(7px,0.9vw,10.5px);color:var(--gray-600)}
+
+/* ── INFRA ── */
+.infra{display:flex;align-items:center;margin-top:clamp(8px,1.4vh,14px)}
+.inode{background:var(--pl);border:1px solid var(--pm);border-radius:8px;padding:5px 10px;text-align:center;font-size:clamp(7px,0.9vw,10px);font-weight:700;color:var(--p);font-family:var(--fd)}
+.iarr{flex:1;height:1px;background:var(--gray-200);margin:0 3px;position:relative}
+.iarr::after{content:'';position:absolute;right:0;top:-3px;border:4px solid transparent;border-left-color:var(--gray-300)}
+
+/* ── SPORT TAG ── */
+.stag{display:flex;align-items:center;gap:9px;padding:clamp(7px,1.1vh,10px) clamp(9px,1.3vw,12px);border:1px solid var(--gray-100);border-radius:10px;transition:border-color .2s}
+.stag:hover{border-color:var(--sm)}
+.stag-e{font-size:clamp(14px,2vw,20px)}
+.stag-t{font-size:clamp(9px,1.1vw,12px);font-weight:600;color:var(--gray-900)}
+.stag-s{font-size:clamp(7px,0.85vw,10px);color:var(--gray-400)}
+
+/* ── GTM ── */
+.gtms{display:flex;gap:9px;padding-bottom:clamp(7px,1.2vh,11px);border-bottom:1px solid var(--gray-100)}
+.gtms:last-child{border-bottom:none;padding-bottom:0}
+.gn{font-family:var(--fd);font-size:clamp(14px,2vw,20px);font-weight:800;color:var(--gray-200);min-width:24px;line-height:1.1}
+.gt{font-size:clamp(9px,1.1vw,12px);font-weight:600;color:var(--gray-900);margin-bottom:1px}
+.gd{font-size:clamp(7px,0.9vw,11px);color:var(--gray-600);line-height:1.4}
+
+/* ── COMP TABLE ── */
+.ctable{width:100%;border-collapse:collapse;font-size:clamp(7px,0.9vw,11px)}
+.ctable th{font-family:var(--fd);font-weight:700;font-size:clamp(7px,0.85vw,10px);letter-spacing:.06em;text-transform:uppercase;color:var(--gray-500);padding:5px 8px;border-bottom:2px solid var(--gray-100);text-align:center}
+.ctable th:first-child{text-align:left}
+.ctable td{padding:5px 8px;border-bottom:1px solid var(--gray-100);color:var(--gray-700);text-align:center;vertical-align:middle}
+.ctable td:first-child{font-weight:600;color:var(--gray-900);text-align:left}
+.ctable tr:last-child td{border-bottom:none}
+.ctable tr.highlight{background:var(--pl)}
+.ctable tr.highlight td{color:var(--pd)}
+.ctable tr.highlight td:first-child{color:var(--p)}
+.check{color:var(--g);font-size:clamp(10px,1.3vw,14px)}
+.cross{color:var(--gray-300);font-size:clamp(10px,1.3vw,14px)}
+.partial{color:var(--amber);font-size:clamp(10px,1.3vw,14px)}
+
+/* ── REV CARDS ── */
+.rgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(5px,0.8vw,9px);flex:1}
+.rc{border:1px solid var(--gray-100);border-radius:10px;padding:clamp(7px,1.2vh,12px);display:flex;flex-direction:column;gap:4px;position:relative;overflow:hidden;transition:border-color .2s,transform .2s}
+.rc:hover{border-color:var(--pm);transform:translateY(-2px)}
+.rc::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:10px 10px 0 0}
+.rc.b2b::before{background:var(--p)}
+.rc.ev::before{background:var(--amber)}
+.rc.ads::before{background:var(--blue)}
+.rc.pro::before{background:var(--g)}
+.rlbl{font-size:clamp(7px,0.85vw,9px);font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gray-400);font-family:var(--fd)}
+.rtit{font-size:clamp(9px,1.1vw,13px);font-weight:700;color:var(--gray-900);font-family:var(--fd)}
+.rprc{font-family:var(--fd);font-size:clamp(13px,1.7vw,19px);color:var(--gray-900);line-height:1;font-weight:800}
+.rsub{font-size:clamp(6px,0.8vw,9px);color:var(--gray-400)}
+.rdsc{font-size:clamp(7px,0.9vw,10px);color:var(--gray-600);line-height:1.45;flex:1}
+.rres{font-size:clamp(7px,0.9vw,11px);font-weight:700;padding:4px 7px;border-radius:6px;text-align:center;margin-top:3px}
+.rc.b2b .rres{background:var(--pl);color:var(--p)}
+.rc.ev .rres{background:#FEF3C7;color:#92400E}
+.rc.ads .rres{background:#EFF6FF;color:#1D4ED8}
+.rc.pro .rres{background:var(--gl);color:#065F46}
+
+/* ── TOTAL BAR ── */
+.tbar{background:var(--gray-900);border-radius:10px;padding:clamp(7px,1.2vh,11px) clamp(14px,2vw,18px);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;margin-top:clamp(5px,0.9vh,9px)}
+.tbl{font-size:clamp(8px,0.95vw,11px);font-weight:600;color:#D1D5DB}
+.tbn{font-family:var(--fd);font-size:clamp(14px,2vw,22px);color:#fff;font-weight:800}
+
+/* ── TSM ── */
+.tsm{display:grid;grid-template-columns:50px 1fr;gap:9px;align-items:center;padding:clamp(7px,1.2vh,11px) clamp(9px,1.3vw,13px);border-radius:10px;border:1px solid var(--gray-100);transition:border-color .2s}
+.tsm:hover{border-color:var(--pm)}
+.tsm-tag{font-size:clamp(9px,1.1vw,13px);font-weight:800;text-align:center;border-radius:6px;padding:5px 0;font-family:var(--fd)}
+.tsm-tag.tam{background:var(--pl);color:var(--p)}
+.tsm-tag.sam{background:#FEF3C7;color:#92400E}
+.tsm-tag.som{background:var(--gl);color:#065F46}
+.tsm-n{font-family:var(--fd);font-size:clamp(14px,2vw,21px);color:var(--gray-900);line-height:1;font-weight:800}
+.tsm-d{font-size:clamp(7px,0.85vw,10.5px);color:var(--gray-600);margin-top:2px}
+
+/* ── EQ BOX ── */
+.eq{background:var(--gray-900);border-radius:10px;padding:clamp(9px,1.5vh,14px)}
+.eq-title{font-family:var(--fd);font-size:clamp(7px,0.85vw,10px);font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#9CA3AF;margin-bottom:7px}
+.eq-line{display:flex;align-items:center;gap:6px;margin-bottom:3px;font-size:clamp(8px,1vw,11.5px);color:#D1D5DB}
+.eq-b{width:5px;height:5px;border-radius:50%;background:var(--pm);flex-shrink:0}
+.eq-result{border-top:1px solid #374151;margin-top:7px;padding-top:7px;font-family:var(--fd);font-size:clamp(16px,2.3vw,22px);color:#fff;font-weight:800}
+.eq-result span{font-size:clamp(8px,1vw,11px);color:#9CA3AF;font-family:var(--fn);font-weight:400;margin-left:5px}
+
+/* ── BUDGET ── */
+.brow{display:flex;align-items:center;gap:9px;padding:clamp(7px,1.1vh,10px) clamp(9px,1.3vw,13px);border:1px solid var(--gray-100);border-radius:10px}
+.bwrap{flex:1;display:flex;flex-direction:column;gap:3px}
+.blbl{font-size:clamp(8px,0.95vw,11px);font-weight:600;color:var(--gray-800);display:flex;justify-content:space-between}
+.blbl span{font-weight:400;color:var(--gray-600)}
+.bbar{height:5px;border-radius:99px;background:var(--gray-100);overflow:hidden}
+.bfill{height:100%;border-radius:99px;transition:width 1.2s cubic-bezier(.4,0,.2,1)}
+
+/* ── ROADMAP ── */
+.rm{display:flex;gap:9px;padding-bottom:clamp(7px,1.2vh,12px);position:relative}
+.rm:not(:last-child)::before{content:'';position:absolute;left:11px;top:26px;bottom:0;width:1px;background:var(--gray-200)}
+.rm-dot{width:24px;height:24px;min-width:24px;border-radius:50%;background:var(--p);color:#fff;font-size:clamp(7px,0.9vw,10px);font-weight:700;display:flex;align-items:center;justify-content:center;font-family:var(--fd)}
+.rm-mo{font-family:var(--fd);font-size:clamp(7px,0.85vw,10px);font-weight:700;color:var(--p);letter-spacing:.08em;text-transform:uppercase;margin-bottom:1px}
+.rm-ti{font-size:clamp(9px,1.1vw,12px);font-weight:600;color:var(--gray-900);margin-bottom:1px}
+.rm-de{font-size:clamp(7px,0.85vw,10.5px);color:var(--gray-600);line-height:1.4}
+
+/* ── KPI ── */
+.kpi{background:var(--p);border-radius:10px;padding:clamp(9px,1.5vh,13px) 14px;color:#fff;text-align:center}
+.kpi-l{font-family:var(--fd);font-size:clamp(7px,0.85vw,10px);font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.7);margin-bottom:2px}
+.kpi-v{font-family:var(--fd);font-size:clamp(22px,3.2vw,30px);line-height:1;margin-bottom:2px;font-weight:800}
+.kpi-s{font-size:clamp(8px,0.95vw,11px);color:rgba(255,255,255,.8)}
+
+/* ── TOKU ALLIANCE ── */
+.alliance{background:linear-gradient(135deg,var(--pl) 0%,#F0FDF4 100%);border:1px solid var(--pm);border-radius:12px;padding:clamp(9px,1.5vh,14px) clamp(11px,1.6vw,16px)}
+.allia-title{font-family:var(--fd);font-size:clamp(11px,1.4vw,16px);font-weight:800;color:var(--gray-900);margin-bottom:5px}
+.allia-desc{font-size:clamp(8px,0.95vw,11px);color:var(--gray-700);line-height:1.55}
+.allia-row{display:flex;align-items:flex-start;gap:7px;margin-top:6px}
+.allia-bullet{width:18px;height:18px;min-width:18px;border-radius:50%;background:var(--p);color:#fff;font-size:9px;display:flex;align-items:center;justify-content:center;font-weight:700;margin-top:1px}
+.allia-text{font-size:clamp(8px,0.95vw,11px);color:var(--gray-700);line-height:1.5}
+.allia-text strong{color:var(--gray-900);font-weight:600}
+
+/* ── CONTACT ── */
+.contact{background:var(--gray-50);border:1px solid var(--gray-100);border-radius:10px;padding:clamp(9px,1.5vh,13px) clamp(11px,1.6vw,15px)}
+.contact-cta{font-family:var(--fd);font-size:clamp(12px,1.6vw,19px);color:var(--gray-900);line-height:1.2;margin-bottom:9px;font-weight:700}
+.contact-cta em{color:var(--p);font-style:normal}
+.clink{font-size:clamp(8px,0.95vw,11.5px);color:var(--gray-600);font-weight:500;margin-bottom:3px}
+.clink strong{color:var(--p);font-weight:600}
+
+/* ── MINI METRICS ── */
+.mms{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(5px,0.8vw,8px)}
+.mm{text-align:center;background:var(--gray-50);border:1px solid var(--gray-100);border-radius:8px;padding:clamp(7px,1.1vh,10px) 5px}
+.mmn{font-family:var(--fd);font-size:clamp(14px,2vw,20px);font-weight:800}
+.mmn.p{color:var(--p)}.mmn.g{color:var(--g)}.mmn.sm{color:var(--sm)}
+.mml{font-size:clamp(6px,0.8vw,9px);color:var(--gray-400);font-weight:600;text-transform:uppercase;letter-spacing:.06em}
+
+/* ── LOGOS SVG inline ── */
+.logo-sm-img{height:clamp(20px,2.5vh,26px);width:auto}
+.logo-toku{height:clamp(18px,2.2vh,24px);width:auto}
+
+/* ── WHY NOW cards ── */
+.wnow{display:grid;grid-template-columns:1fr 1fr;gap:clamp(6px,1vw,10px);flex:1}
+.wncard{border:1px solid var(--gray-100);border-radius:10px;padding:clamp(9px,1.5vh,14px);display:flex;flex-direction:column;gap:5px;cursor:pointer;transition:border-color .2s,background .2s}
+.wncard:hover{border-color:var(--pm);background:var(--pl)}
+.wncard-icon{font-size:clamp(16px,2.2vw,24px)}
+.wncard-t{font-family:var(--fd);font-size:clamp(9px,1.1vw,13px);font-weight:700;color:var(--gray-900)}
+.wncard-d{font-size:clamp(8px,0.95vw,11px);color:var(--gray-600);line-height:1.5}
+
+/* ── INTERACTIVE CHART CANVAS ── */
+.chart-wrap{position:relative;flex:1;min-height:0}
+canvas.chart{width:100%;height:100%}
+
+/* ── RETENTION LOOP ── */
+.rloop{flex:1;display:flex;align-items:center;justify-content:center;position:relative}
+.rloop-center{width:clamp(60px,8vw,90px);height:clamp(60px,8vw,90px);border-radius:50%;background:var(--p);display:flex;align-items:center;justify-content:center;text-align:center;color:#fff;font-family:var(--fd);font-size:clamp(7px,0.9vw,10px);font-weight:700;line-height:1.3;z-index:2;position:relative}
+.rnode{position:absolute;background:var(--white);border:2px solid var(--p);border-radius:10px;padding:clamp(5px,0.9vh,9px) clamp(7px,1vw,12px);font-size:clamp(7px,0.85vw,10px);font-weight:600;color:var(--gray-800);text-align:center;max-width:clamp(90px,12vw,130px);line-height:1.3;transition:background .2s,border-color .2s;cursor:default}
+.rnode:hover{background:var(--pl);border-color:var(--pd)}
+.rnode em{display:block;font-style:normal;font-size:clamp(6px,0.75vw,9px);color:var(--gray-500);font-weight:400;margin-top:2px}
+
+/* ── NAV ── */
+#nav{display:flex;align-items:center;gap:12px;flex-shrink:0}
+#nav button{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);color:#fff;border-radius:8px;cursor:pointer;font-family:var(--fd);font-size:clamp(10px,1.1vw,13px);font-weight:600;padding:6px 16px;transition:background .15s}
+#nav button:hover{background:rgba(255,255,255,.2)}
+#nav button:disabled{opacity:.3;cursor:default}
+#counter{color:rgba(255,255,255,.6);font-size:clamp(10px,1.1vw,12px);font-weight:600;font-family:var(--fd);min-width:52px;text-align:center}
+#dots{display:flex;gap:5px;align-items:center}
+.db{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.22);border:none;cursor:pointer;padding:0;transition:background .15s,transform .15s}
+.db.on{background:#fff;transform:scale(1.35)}
+#fsb{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);color:#fff;border-radius:8px;cursor:pointer;font-size:clamp(10px,1.1vw,13px);padding:6px 11px;font-weight:600;font-family:var(--fd);transition:background .15s}
+#fsb:hover{background:rgba(255,255,255,.2)}
+
+
+</style>
+</head>
+<body>
+<div id="deck">
+<div id="frame">
+
+<!-- ══════════ S1 — [A] ATTENTION ══════════ -->
+<div class="slide active" data-note="Quiero empezar con una imagen. Son las 6:58 AM. Tienes ropa deportiva lista. El box está a cinco minutos caminando. Y sin embargo... apagas la alarma. No porque estés cansado. Sino porque salir solo a las 7 AM en esta ciudad se siente inseguro. O porque nadie confirmó en el grupo. O porque el chat del gym lleva semanas en silencio. Eso le pasa a 3 millones de personas en CDMX cada semana. El problema no es disciplina. Es coordinación. Y eso es un mercado de 42 mil millones de pesos esperando solución.">
+  <div class="hdr">
+    <div class="hdr-logos">
+      <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjQwIiB2aWV3Qm94PSIwIDAgMTIwIDQwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgogIDxjaXJjbGUgY3g9IjEyIiBjeT0iMjgiIHI9IjExIiBmaWxsPSIjN0MzQUVEIi8+CiAgPGNpcmNsZSBjeD0iMjIiIGN5PSIxMyIgcj0iOCIgZmlsbD0iIzdDM0FFRCIvPgogIDxjaXJjbGUgY3g9IjUiIGN5PSIxNyIgcj0iNSIgZmlsbD0iIzdDM0FFRCIvPgogIDx0ZXh0IHg9IjMzIiB5PSIzMiIgZm9udC1mYW1pbHk9IlN5bmUsc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9IjgwMCIgZm9udC1zaXplPSIyNiIgZmlsbD0iIzdDM0FFRCI+dG9rdTwvdGV4dD4KICA8dGV4dCB4PSIxMDYiIHk9IjE1IiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiIgZm9udC1zaXplPSIxMiIgZmlsbD0iIzdDM0FFRCI+wq48L3RleHQ+Cjwvc3ZnPg==" class="logo-toku" alt="Toku">
+      <div class="hdr-divider"></div>
+      <svg class="logo-sm-img" viewBox="0 0 210 44" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="18" cy="20" r="9" fill="#84CC16"/>
+        <ellipse cx="18" cy="32" rx="7" ry="5" fill="#84CC16"/>
+        <circle cx="30" cy="14" r="7" fill="#374151"/>
+        <ellipse cx="30" cy="24" rx="6" ry="4" fill="#374151"/>
+        <line x1="23" y1="14" x2="24" y2="12" stroke="#FDE047" stroke-width="2" stroke-linecap="round"/>
+        <text x="44" y="30" font-family="Syne,sans-serif" font-weight="800" font-size="12" fill="#374151">SPORT</text>
+        <text x="113" y="30" font-family="Syne,sans-serif" font-weight="800" font-size="12" fill="#84CC16">MATCH</text>
+      </svg>
+    </div>
+    <span class="pill">A · Attention</span>
+    <div class="badge"><span class="bdot"></span>CDMX · 2025</div>
+  </div>
+  <div class="body" style="justify-content:center">
+    <div style="display:grid;grid-template-columns:1fr 1fr;flex:1;overflow:hidden;gap:0">
+      <div style="display:flex;flex-direction:column;justify-content:center;padding-right:clamp(16px,2.5vw,32px);border-right:1px solid var(--gray-100)">
+        <div class="eyebrow" style="margin-bottom:clamp(10px,1.8vh,18px)">El problema real no es de voluntad</div>
+        <div class="display" style="font-size:clamp(18px,3vw,42px);line-height:1.15;margin-bottom:clamp(12px,2vh,20px)">La gente tiene los tenis<br>comprados y la motivación<br>al máximo.<br><em>El problema es logístico.</em></div>
+        <div class="sub" style="font-size:clamp(10px,1.3vw,14px);color:var(--gray-500);max-width:420px">Nadie ha construido la infraestructura logística que organice el futuro del deporte urbano en comunidad.</div>
+      </div>
+      <div style="display:flex;flex-direction:column;justify-content:center;gap:clamp(8px,1.4vh,14px);padding-left:clamp(16px,2.5vw,32px)">
+        <div class="stat"><div class="stn p">3M</div><div class="stl">deportistas activos<br>en CDMX</div></div>
+        <div class="stat"><div class="stn">$42B</div><div class="stl">MXN — mercado fitness<br>México</div></div>
+        <div class="stat"><div class="stn sm">+65%</div><div class="stl">más constancia entrenando<br>con un compañero</div></div>
+        <div class="stat"><div class="stn" style="color:var(--red)">0</div><div class="stl">apps con verificación de identidad<br>para deporte en LATAM</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ S2 — [S] SITUATION ══════════ -->
+<div class="slide" data-note="Los datos del INEGI lo confirman: el 42% no hace ejercicio por falta de coordinación, no de ganas. El 31% dice que no tiene con quién ir. En CDMX, el 24% cita el miedo a salir solo como barrera real. Strava documenta el pasado, WhatsApp satura y tiene riesgos de seguridad, los grupos de Facebook carecen de filtros de nivel. El problema no es voluntad — es una falla logística del mercado que nadie ha resuelto con seguridad verificada. Eso es lo que construimos.">
+  <div class="hdr">
+    <div class="hdr-logos">
+      <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjQwIiB2aWV3Qm94PSIwIDAgMTIwIDQwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgogIDxjaXJjbGUgY3g9IjEyIiBjeT0iMjgiIHI9IjExIiBmaWxsPSIjN0MzQUVEIi8+CiAgPGNpcmNsZSBjeD0iMjIiIGN5PSIxMyIgcj0iOCIgZmlsbD0iIzdDM0FFRCIvPgogIDxjaXJjbGUgY3g9IjUiIGN5PSIxNyIgcj0iNSIgZmlsbD0iIzdDM0FFRCIvPgogIDx0ZXh0IHg9IjMzIiB5PSIzMiIgZm9udC1mYW1pbHk9IlN5bmUsc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9IjgwMCIgZm9udC1zaXplPSIyNiIgZmlsbD0iIzdDM0FFRCI+dG9rdTwvdGV4dD4KICA8dGV4dCB4PSIxMDYiIHk9IjE1IiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiIgZm9udC1zaXplPSIxMiIgZmlsbD0iIzdDM0FFRCI+wq48L3RleHQ+Cjwvc3ZnPg==" class="logo-toku" alt="Toku">
+      <div class="hdr-divider"></div>
+      <svg class="logo-sm-img" viewBox="0 0 210 44" xmlns="http://www.w3.org/2000/svg"><circle cx="18" cy="20" r="9" fill="#84CC16"/><ellipse cx="18" cy="32" rx="7" ry="5" fill="#84CC16"/><circle cx="30" cy="14" r="7" fill="#374151"/><ellipse cx="30" cy="24" rx="6" ry="4" fill="#374151"/><line x1="23" y1="14" x2="24" y2="12" stroke="#FDE047" stroke-width="2" stroke-linecap="round"/><text x="44" y="30" font-family="Syne,sans-serif" font-weight="800" font-size="19" fill="#374151">SPORT</text><text x="113" y="30" font-family="Syne,sans-serif" font-weight="800" font-size="19" fill="#84CC16">MATCH</text></svg>
+    </div>
+    <span class="pill">S · Situation</span>
+    <div class="badge"><span class="bdot"></span>La fricción de la coordinación</div>
+  </div>
+  <div class="body">
+    <div class="cols">
+      <div class="col-l">
+        <div class="eyebrow">El dolor real del mercado</div>
+        <div class="display" style="font-size:clamp(16px,2.8vw,38px)">No por falta<br>de motivación.</div>
+        <div class="sub" style="font-size:clamp(10px,1.3vw,14px);font-weight:600;color:#374151;margin-bottom:8px">Por falta de coordinación.</div>
+        <div style="margin-top:4px">
+          <div class="eyebrow" style="color:var(--gray-400);margin-bottom:7px">¿Por qué no hacen ejercicio? — INEGI MOPRADEF 2023</div>
+          <div class="bar-row"><div class="bar-pct">42%</div><div class="bar-lbl">Falta de coordinación</div><div class="bar-bg"><div class="bar-fill" style="width:0%" data-w="84%"></div></div></div>
+          <div class="bar-row"><div class="bar-pct">31%</div><div class="bar-lbl">No tienen con quién ir</div><div class="bar-bg"><div class="bar-fill" style="width:0%" data-w="62%"></div></div></div>
+          <div class="bar-row"><div class="bar-pct">24%</div><div class="bar-lbl">Miedo a salir solos</div><div class="bar-bg"><div class="bar-fill" style="width:0%" data-w="48%"></div></div></div>
+          <div class="bar-row"><div class="bar-pct">18%</div><div class="bar-lbl">Sin grupo compatible</div><div class="bar-bg"><div class="bar-fill" style="width:0%" data-w="36%"></div></div></div>
+        </div>
+        <div style="margin-top:8px;font-size:clamp(7px,0.85vw,10px);color:var(--gray-400)">Fallas actuales: Strava documenta el pasado · WhatsApp genera spam y riesgos de seguridad · Facebook Groups sin filtros de nivel</div>
+      </div>
+      <div class="col-r">
+        <div class="dc"><div class="dcn">72%</div><div><span class="dct">abandona el gym en el primer mes</span><span class="dcs">Nuffield Health UK 2024 (n=8,000)</span></div></div>
+        <div class="dc"><div class="dcn">+65%</div><div><span class="dct">más constancia entrenando con compañero</span><span class="dcs">University of Aberdeen / Zurich</span></div></div>
+        <div class="dc"><div class="dcn">3M</div><div><span class="dct">deportistas activos en CDMX sin solución</span><span class="dcs">INEGI MOPRADEF 2023</span></div></div>
+        <div class="dc"><div class="dcn" style="color:var(--red)">0</div><div><span class="dct">apps con verificación de identidad para deporte</span><span class="dcs">Gap no resuelto en México ni LATAM</span></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ S3 — [T] TRIGGER / SOLUCIÓN ══════════ -->
+<div class="slide" data-note="La respuesta se llama SportMatch. Es el mapa de tu ciudad para hacer ejercicio acompañado. Publicas dónde y cuándo sales, te conectamos con alguien compatible y WhatsApp te avisa en tiempo real. Pero hay un diferenciador único en México y en toda LATAM: verificación obligatoria con INE. Sin identidad verificada, no puedes usar la app. Eso resuelve el miedo a conocer extraños — la barrera número uno para las mujeres. La mejor manera de entender SportMatch no es que yo les cuente — es verlo en vivo. [DEMO 7 minutos]">
+  <div class="hdr">
+    <div class="hdr-logos">
+      <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjQwIiB2aWV3Qm94PSIwIDAgMTIwIDQwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgogIDxjaXJjbGUgY3g9IjEyIiBjeT0iMjgiIHI9IjExIiBmaWxsPSIjN0MzQUVEIi8+CiAgPGNpcmNsZSBjeD0iMjIiIGN5PSIxMyIgcj0iOCIgZmlsbD0iIzdDM0FFRCIvPgogIDxjaXJjbGUgY3g9IjUiIGN5PSIxNyIgcj0iNSIgZmlsbD0iIzdDM0FFRCIvPgogIDx0ZXh0IHg9IjMzIiB5PSIzMiIgZm9udC1mYW1pbHk9IlN5bmUsc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9IjgwMCIgZm9udC1zaXplPSIyNiIgZmlsbD0iIzdDM0FFRCI+dG9rdTwvdGV4dD4KICA8dGV4dCB4PSIxMDYiIHk9IjE1IiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiIgZm9udC1zaXplPSIxMiIgZmlsbD0iIzdDM0FFRCI+wq48L3RleHQ+Cjwvc3ZnPg==" class="logo-toku" alt="Toku">
+      <div class="hdr-divider"></div>
+      <svg class="logo-sm-img" viewBox="0 0 210 44" xmlns="http://www.w3.org/2000/svg"><circle cx="18" cy="20" r="9" fill="#84CC16"/><ellipse cx="18" cy="32" rx="7" ry="5" fill="#84CC16"/><circle cx="30" cy="14" r="7" fill="#374151"/><ellipse cx="30" cy="24" rx="6" ry="4" fill="#374151"/><line x1="23" y1="14" x2="24" y2="12" stroke="#FDE047" stroke-width="2" stroke-linecap="round"/><text x="44" y="30" font-family="Syne,sans-serif" font-weight="800" font-size="19" fill="#374151">SPORT</text><text x="113" y="30" font-family="Syne,sans-serif" font-weight="800" font-size="19" fill="#84CC16">MATCH</text></svg>
+    </div>
+    <span class="pill">T · Trigger</span>
+    <div class="badge"><span class="bdot"></span>El Ecosistema SportMatch</div>
+  </div>
+  <div class="body">
+    <div class="cols">
+      <div class="col-l">
+        <div class="eyebrow">La Solución</div>
+        <div class="display" style="font-size:clamp(14px,2.2vw,28px);margin-bottom:3px">SportMatch</div>
+        <div class="sub" style="font-size:clamp(10px,1.3vw,14px);font-weight:600;color:#111827;margin-bottom:5px">El mapa de tu ciudad para hacer ejercicio acompañado.</div>
+        <div class="sub" style="margin-bottom:9px">Publicas dónde y cuándo sales. Matching automático por nivel, zona y horario. WhatsApp te avisa. Verificación de identidad en cada interacción.</div>
+        <div class="ine">
+          <div class="ine-icon"><svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.25 3.75 10.05 9 11.25C17.25 21.05 21 16.25 21 11V5L12 1zm-1 14l-3-3 1.41-1.41L11 12.17l4.59-4.58L17 9l-6 6z"/></svg></div>
+          <div><div class="ine-t">Verificación obligatoria con INE / Pasaporte</div><div class="ine-s">Primera app deportiva en LATAM con identidad verificada. Sin INE, sin acceso. Punto.</div></div>
+        </div>
+        <div class="demo" style="margin-top:9px">▶ DEMO EN VIVO — 7 minutos a continuación</div>
+      </div>
+      <div class="col-r">
+        <div class="step"><div class="step-n">1</div><div><div class="step-t">Publicación de sesión</div><div class="step-d">Define deporte (CrossFit/HIIT/Calistenia), nivel RX o Scaled, zona y horario.</div></div></div>
+        <div class="step"><div class="step-n">2</div><div><div class="step-t">Matching inteligente</div><div class="step-d">Algoritmo propietario conecta perfiles compatibles de forma inmediata.</div></div></div>
+        <div class="step"><div class="step-n">3</div><div><div class="step-t">Notificación vía WhatsApp</div><div class="step-d">Alguien se une — confirmas en 1 tap. Sin apps adicionales.</div></div></div>
+        <div class="step"><div class="step-n">4</div><div><div class="step-t">Verificación por capas</div><div class="step-d">INE / biométricos / teléfono. Geolocalización + chat progresivo + rating post-sesión.</div></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ S4 — [O] OVERRIDING QUESTION (post-demo) ══════════ -->
+<div class="slide" data-note="Acaban de ver cómo funciona SportMatch en vivo. La pregunta que tienen en la cabeza ahora mismo — y que yo también tengo — es: ¿cómo convertimos esto en un negocio? ¿Cómo monetizamos cada sesión coordinada, cada conexión entre usuario y gimnasio, cada evento deportivo? Hay tres pilares que responden esa pregunta. Voy a mostrárselos uno por uno.">
+  <div class="hdr">
+    <div class="hdr-logos">
+      <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjQwIiB2aWV3Qm94PSIwIDAgMTIwIDQwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgogIDxjaXJjbGUgY3g9IjEyIiBjeT0iMjgiIHI9IjExIiBmaWxsPSIjN0MzQUVEIi8+CiAgPGNpcmNsZSBjeD0iMjIiIGN5PSIxMyIgcj0iOCIgZmlsbD0iIzdDM0FFRCIvPgogIDxjaXJjbGUgY3g9IjUiIGN5PSIxNyIgcj0iNSIgZmlsbD0iIzdDM0FFRCIvPgogIDx0ZXh0IHg9IjMzIiB5PSIzMiIgZm9udC1mYW1pbHk9IlN5bmUsc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9IjgwMCIgZm9udC1zaXplPSIyNiIgZmlsbD0iIzdDM0FFRCI+dG9rdTwvdGV4dD4KICA8dGV4dCB4PSIxMDYiIHk9IjE1IiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiIgZm9udC1zaXplPSIxMiIgZmlsbD0iIzdDM0FFRCI+wq48L3RleHQ+Cjwvc3ZnPg==" class="logo-toku" alt="Toku">
+      <div class="hdr-divider"></div>
+      <svg class="logo-sm-img" viewBox="0 0 210 44" xmlns="http://www.w3.org/2000/svg"><circle cx="18" cy="20" r="9" fill="#84CC16"/><ellipse cx="18" cy="32" rx="7" ry="5" fill="#84CC16"/><circle cx="30" cy="14" r="7" fill="#374151"/><ellipse cx="30" cy="24" rx="6" ry="4" fill="#374151"/><line x1="23" y1="14" x2="24" y2="12" stroke="#FDE047" stroke-width="2" stroke-linecap="round"/><text x="44" y="30" font-family="Syne,sans-serif" font-weight="800" font-size="19" fill="#374151">SPORT</text><text x="113" y="30" font-family="Syne,sans-serif" font-weight="800" font-size="19" fill="#84CC16">MATCH</text></svg>
+    </div>
+    <span class="pill">O · Overriding Question</span>
+    <div class="badge"><span class="bdot"></span>Transición post-demo</div>
+  </div>
+  <div class="body">
+    <div class="center">
+      <div class="eyebrow" style="margin-bottom:12px">Post-Demo · La pregunta que abre el negocio</div>
+      <div class="display" style="font-size:clamp(16px,2.8vw,38px);max-width:820px;margin-bottom:clamp(12px,2vh,22px);line-height:1.2">¿Cómo transformamos esta coordinación social en un negocio <em>altamente escalable</em> dentro de la industria del fitness?</div>
+      <div class="pillars">
+        <div class="pillar"><div class="pillar-icon">🏗️</div>Infraestructura<br>de comunidad</div>
+        <div class="pillar"><div class="pillar-icon">💰</div>Monetización<br>en cada interacción</div>
+        <div class="pillar"><div class="pillar-icon">🔁</div>Retención<br>anti-desintermediación</div>
+        <div class="pillar"><div class="pillar-icon">📈</div>Escalabilidad<br>ciudad a ciudad</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ S5 — [K] KEY MESSAGE ══════════ -->
+<div class="slide" data-note="SportMatch no es una app de workouts ni un directorio de gyms. Somos la infraestructura que conecta la comunidad de fitness funcional más activa de CDMX con los establecimientos locales — y cobramos en cada punto de interacción. Cuando un usuario publica una sesión, cobramos. Cuando un box quiere aparecer en el mapa, cobramos. Cuando una marca quiere hablarle a alguien que acaba de terminar su WOD, cobramos. Cuatro fuentes de ingreso, un flywheel natural, replicable en GDL, MTY y toda LATAM.">
+  <div class="hdr">
+    <div class="hdr-logos">
+      <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjQwIiB2aWV3Qm94PSIwIDAgMTIwIDQwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgogIDxjaXJjbGUgY3g9IjEyIiBjeT0iMjgiIHI9IjExIiBmaWxsPSIjN0MzQUVEIi8+CiAgPGNpcmNsZSBjeD0iMjIiIGN5PSIxMyIgcj0iOCIgZmlsbD0iIzdDM0FFRCIvPgogIDxjaXJjbGUgY3g9IjUiIGN5PSIxNyIgcj0iNSIgZmlsbD0iIzdDM0FFRCIvPgogIDx0ZXh0IHg9IjMzIiB5PSIzMiIgZm9udC1mYW1pbHk9IlN5bmUsc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9IjgwMCIgZm9udC1zaXplPSIyNiIgZmlsbD0iIzdDM0FFRCI+dG9rdTwvdGV4dD4KICA8dGV4dCB4PSIxMDYiIHk9IjE1IiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiIgZm9udC1zaXplPSIxMiIgZmlsbD0iIzdDM0FFRCI+wq48L3RleHQ+Cjwvc3ZnPg==" class="logo-toku" alt="Toku">
+      <div class="hdr-divider"></div>
+      <svg class="logo-sm-img" viewBox="0 0 210 44" xmlns="http://www.w3.org/2000/svg"><circle cx="18" cy="20" r="9" fill="#84CC16"/><ellipse cx="18" cy="32" rx="7" ry="5" fill="#84CC16"/><circle cx="30" cy="14" r="7" fill="#374151"/><ellipse cx="30" cy="24" rx="6" ry="4" fill="#374151"/><line x1="23" y1="14" x2="24" y2="12" stroke="#FDE047" stroke-width="2" stroke-linecap="round"/><text x="44" y="30" font-family="Syne,sans-serif" font-weight="800" font-size="19" fill="#374151">SPORT</text><text x="113" y="30" font-family="Syne,sans-serif" font-weight="800" font-size="19" fill="#84CC16">MATCH</text></svg>
+    </div>
+    <span class="pill">K · Key Message</span>
+    <div class="badge"><span class="bdot"></span>Propuesta de valor comercial</div>
+  </div>
+  <div class="body">
+    <div class="cols" style="grid-template-columns:1.1fr 0.9fr">
+      <div class="col-l">
+        <div class="eyebrow">Key Message</div>
+        <div class="display" style="font-size:clamp(14px,2.2vw,28px)">Somos la infraestructura del fitness social en CDMX.</div>
+        <div class="sub" style="margin-bottom:6px">No somos una app de workouts ni un directorio de gyms. Somos el sistema operativo que conecta usuarios con establecimientos — y cobramos en cada interacción.</div>
+        <div class="infra">
+          <div class="inode">Usuarios<br>Activos</div>
+          <div class="iarr"></div>
+          <div class="inode" style="background:var(--gray-100);border-color:var(--gray-200);color:var(--gray-700)">Sport<br>Match</div>
+          <div class="iarr"></div>
+          <div class="inode" style="background:var(--gl);border-color:#6EE7B7;color:#065F46">Boxes &<br>Studios</div>
+        </div>
+        <div style="margin-top:8px;font-size:clamp(7px,0.85vw,10px);color:var(--gray-500);font-style:italic">Cobro en cada punto: membresía B2B · eventos · suscripción Pro · anuncios contextuales</div>
+      </div>
+      <div class="col-r">
+        <div class="vrow"><div class="vri" style="background:#EDE9FE">🏋️</div><div><span class="vrt">Comunidad verificada</span><span class="vrs">Usuarios con identidad real, activos 3-5x/semana</span></div></div>
+        <div class="vrow"><div class="vri" style="background:#FEF3C7">🗺️</div><div><span class="vrt">Mapa de demanda en tiempo real</span><span class="vrs">Los establecimientos ven dónde está la actividad</span></div></div>
+        <div class="vrow"><div class="vri" style="background:var(--gl)">💳</div><div><span class="vrt">4 fuentes de ingreso simultáneas</span><span class="vrs">B2B + Eventos + Ads + Pro</span></div></div>
+        <div class="vrow"><div class="vri" style="background:#EFF6FF">🚀</div><div><span class="vrt">Modelo replicable ciudad a ciudad</span><span class="vrs">Mismo playbook: GDL · MTY · Bogotá · Lima</span></div></div>
+        <div class="vrow"><div class="vri" style="background:#FEF3C7">⏱️</div><div><span class="vrt">¿Por qué ahora? Tormenta perfecta</span><span class="vrs">APIs de identidad + epidemia de soledad urbana + auge funcional</span></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ S6 — [E1] MERCADO TAM/SAM/SOM ══════════ -->
+<div class="slide" data-note="El mercado total de fitness en México vale 42 mil millones de pesos. Nuestro SAM es el nicho funcional en CDMX: 280 mil personas que hacen CrossFit, HIIT o calistenia de manera regular. Objetivo Año 1: capturar el 10%, 28 mil usuarios activos. La ecuación: 5% Pro a 120 pesos son 168 mil al mes. 20 boxes a 8 mil promedio son 160 mil. Cuatro eventos suman 40 mil. Total: más de 1.2 millones al mes solo en CDMX. Antes de GDL, MTY y LATAM.">
+  <div class="hdr">
+    <div class="hdr-logos">
+      <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjQwIiB2aWV3Qm94PSIwIDAgMTIwIDQwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgogIDxjaXJjbGUgY3g9IjEyIiBjeT0iMjgiIHI9IjExIiBmaWxsPSIjN0MzQUVEIi8+CiAgPGNpcmNsZSBjeD0iMjIiIGN5PSIxMyIgcj0iOCIgZmlsbD0iIzdDM0FFRCIvPgogIDxjaXJjbGUgY3g9IjUiIGN5PSIxNyIgcj0iNSIgZmlsbD0iIzdDM0FFRCIvPgogIDx0ZXh0IHg9IjMzIiB5PSIzMiIgZm9udC1mYW1pbHk9IlN5bmUsc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9IjgwMCIgZm9udC1zaXplPSIyNiIgZmlsbD0iIzdDM0FFRCI+dG9rdTwvdGV4dD4KICA8dGV4dCB4PSIxMDYiIHk9IjE1IiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiIgZm9udC1zaXplPSIxMiIgZmlsbD0iIzdDM0FFRCI+wq48L3RleHQ+Cjwvc3ZnPg==" class="logo-toku" alt="Toku">
+      <div class="hdr-divider"></div>
+      <svg class="logo-sm-img" viewBox="0 0 210 44" xmlns="http://www.w3.org/2000/svg"><circle cx="18" cy="20" r="9" fill="#84CC16"/><ellipse cx="18" cy="32" rx="7" ry="5" fill="#84CC16"/><circle cx="30" cy="14" r="7" fill="#374151"/><ellipse cx="30" cy="24" rx="6" ry="4" fill="#374151"/><line x1="23" y1="14" x2="24" y2="12" stroke="#FDE047" stroke-width="2" stroke-linecap="round"/><text x="44" y="30" font-family="Syne,sans-serif" font-weight="800" font-size="19" fill="#374151">SPORT</text><text x="113" y="30" font-family="Syne,sans-serif" font-weight="800" font-size="19" fill="#84CC16">MATCH</text></svg>
+    </div>
+    <span class="pill">E1 · Mercado</span>
+    <div class="badge"><span class="bdot"></span>TAM · SAM · SOM</div>
+  </div>
+  <div class="body">
+    <div class="cols">
+      <div class="col-l">
+        <div class="eyebrow">El mercado está ahí. Solo falta coordinarlo.</div>
+        <div class="tsm"><div class="tsm-tag tam">TAM</div><div><div class="tsm-n">$42B MXN</div><div class="tsm-d">3,000,000 deportistas activos · mercado total fitness México</div></div></div>
+        <div class="tsm"><div class="tsm-tag sam">SAM</div><div><div class="tsm-n">280,000</div><div class="tsm-d">Nicho funcional CDMX — CrossFit, HIIT, Calistenia, Boutique</div></div></div>
+        <div class="tsm"><div class="tsm-tag som">SOM</div><div><div class="tsm-n">28,000</div><div class="tsm-d">10% de captura del SAM en Año 1 — objetivo conservador</div></div></div>
+        <div style="margin-top:7px">
+          <canvas id="mktChart" style="width:100%;height:clamp(70px,9vh,100px)"></canvas>
+        </div>
+      </div>
+      <div class="col-r">
+        <div class="eq">
+          <div class="eq-title">La ecuación ganadora — Año 1 · Solo CDMX</div>
+          <div class="eq-line"><div class="eq-b"></div>28,000 usuarios × 5% Pro = 1,400 suscriptores</div>
+          <div class="eq-line"><div class="eq-b"></div>1,400 × $120 MXN = <strong style="color:#fff">$168K/mes</strong></div>
+          <div class="eq-line"><div class="eq-b"></div>20 boxes × $8K promedio = <strong style="color:#fff">$160K/mes</strong></div>
+          <div class="eq-line"><div class="eq-b"></div>4 eventos × $10K = <strong style="color:#fff">$40K/mes</strong></div>
+          <div class="eq-result">$1.2M MXN / mes <span>solo en CDMX</span></div>
+        </div>
+        <div style="background:var(--gray-50);border:1px solid var(--gray-100);border-radius:10px;padding:clamp(8px,1.3vh,12px) clamp(10px,1.4vw,13px);margin-top:0">
+          <div class="eyebrow" style="margin-bottom:6px">Expansión — Años 2 y 3</div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap">
+            <span style="background:var(--pl);color:var(--p);border-radius:6px;padding:3px 8px;font-size:clamp(8px,0.95vw,11px);font-weight:700">GDL</span>
+            <span style="background:var(--pl);color:var(--p);border-radius:6px;padding:3px 8px;font-size:clamp(8px,0.95vw,11px);font-weight:700">MTY</span>
+            <span style="background:var(--pl);color:var(--p);border-radius:6px;padding:3px 8px;font-size:clamp(8px,0.95vw,11px);font-weight:700">Bogotá</span>
+            <span style="background:var(--pl);color:var(--p);border-radius:6px;padding:3px 8px;font-size:clamp(8px,0.95vw,11px);font-weight:700">Lima</span>
+            <span style="background:var(--pl);color:var(--p);border-radius:6px;padding:3px 8px;font-size:clamp(8px,0.95vw,11px);font-weight:700">Santiago</span>
+          </div>
+          <div style="font-size:clamp(7px,0.85vw,10px);color:var(--gray-500);margin-top:6px;line-height:1.4">Mismo playbook · Comunidades CrossFit ya activas · Modelo probado en CDMX</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ S7 — [E2] MODELO DE NEGOCIO ══════════ -->
+<div class="slide" data-note="El modelo tiene cuatro fuentes de ingreso que se refuerzan. B2B: los boxes pagan 3 a 15 mil pesos al mes para aparecer en el mapa — con 20 clientes son 300 mil al mes. Eventos patrocinados: 5 a 15 mil por evento, 4 al mes son 40 mil. Anuncios contextuales en el tier gratuito — marcas como Asics o Gatorade pagando CPM premium justo después del WOD. Plan Pro a 120 pesos al mes — 500 usuarios son 75 mil. Objetivo Año 1: 405 mil pesos al mes entre B2B, Eventos y Pro.">
+  <div class="hdr">
+    <div class="hdr-logos">
+      <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjQwIiB2aWV3Qm94PSIwIDAgMTIwIDQwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgogIDxjaXJjbGUgY3g9IjEyIiBjeT0iMjgiIHI9IjExIiBmaWxsPSIjN0MzQUVEIi8+CiAgPGNpcmNsZSBjeD0iMjIiIGN5PSIxMyIgcj0iOCIgZmlsbD0iIzdDM0FFRCIvPgogIDxjaXJjbGUgY3g9IjUiIGN5PSIxNyIgcj0iNSIgZmlsbD0iIzdDM0FFRCIvPgogIDx0ZXh0IHg9IjMzIiB5PSIzMiIgZm9udC1mYW1pbHk9IlN5bmUsc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9IjgwMCIgZm9udC1zaXplPSIyNiIgZmlsbD0iIzdDM0FFRCI+dG9rdTwvdGV4dD4KICA8dGV4dCB4PSIxMDYiIHk9IjE1IiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiIgZm9udC1zaXplPSIxMiIgZmlsbD0iIzdDM0FFRCI+wq48L3RleHQ+Cjwvc3ZnPg==" class="logo-toku" alt="Toku">
+      <div class="hdr-divider"></div>
+      <svg class="logo-sm-img" viewBox="0 0 210 44" xmlns="http://www.w3.org/2000/svg"><circle cx="18" cy="20" r="9" fill="#84CC16"/><ellipse cx="18" cy="32" rx="7" ry="5" fill="#84CC16"/><circle cx="30" cy="14" r="7" fill="#374151"/><ellipse cx="30" cy="24" rx="6" ry="4" fill="#374151"/><line x1="23" y1="14" x2="24" y2="12" stroke="#FDE047" stroke-width="2" stroke-linecap="round"/><text x="44" y="30" font-family="Syne,sans-serif" font-weight="800" font-size="19" fill="#374151">SPORT</text><text x="113" y="30" font-family="Syne,sans-serif" font-weight="800" font-size="19" fill="#84CC16">MATCH</text></svg>
+    </div>
+    <span class="pill">E2 · Monetización</span>
+    <div class="badge"><span class="bdot"></span>4 fuentes de ingreso</div>
+  </div>
+  <div class="body" style="gap:clamp(5px,0.8vh,9px)">
+    <div class="rgrid">
+      <div class="rc b2b"><div class="rlbl">B2B SaaS</div><div class="rtit">Espacios deportivos</div><div class="rprc">$3K–$15K</div><div class="rsub">MXN / mes · por establecimiento</div><div class="rdsc">Boxes, gyms y studios pagan para aparecer destacados en el mapa, gestionar reservas y captar clientes calificados.</div><div class="rres">20 clientes = $300K/mes</div></div>
+      <div class="rc ev"><div class="rlbl">Eventos</div><div class="rtit">Eventos patrocinados</div><div class="rprc">$5K–$15K</div><div class="rsub">MXN · por evento</div><div class="rdsc">El box pone instalaciones + coach. SportMatch matchea participantes por nivel RX/Scaled. El gym gana prospectos calificados.</div><div class="rres">4 eventos/mes = $40K/mes</div></div>
+      <div class="rc ads"><div class="rlbl">Publicidad</div><div class="rtit">Anuncios contextuales</div><div class="rprc">RPM $80–150</div><div class="rsub">MXN · por 1,000 impresiones</div><div class="rdsc">Acceso gratis con anuncios premium de Asics, Gatorade, Powerade. Usuario activo post-WOD, no scrolleando.</div><div class="rres">Tier gratuito monetizado</div></div>
+      <div class="rc pro"><div class="rlbl">B2C Premium</div><div class="rtit">SportMatch Pro</div><div class="rprc">$120</div><div class="rsub">MXN / mes · por usuario</div><div class="rdsc">Matching avanzado, prioridad en eventos, historial de compañeros con rating, notificaciones anticipadas.</div><div class="rres">500 usuarios = $75K/mes</div></div>
+    </div>
+    <div style="display:flex;gap:clamp(6px,0.9vw,10px);align-items:stretch;flex-shrink:0">
+      <div class="tbar" style="flex:1"><div class="tbl">Objetivo Año 1 — B2B + Eventos + Pro</div><div class="tbn">$405,000 MXN / mes</div></div>
+      <div style="background:var(--sm);border-radius:10px;padding:clamp(7px,1.2vh,11px) clamp(12px,1.8vw,16px);display:flex;align-items:center"><div style="font-family:var(--fd);font-size:clamp(10px,1.3vw,14px);font-weight:800;color:#fff;text-align:center">Margen<br>~68%</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ S8 — [E3] GTM + VENTAJA COMPETITIVA ══════════ -->
+<div class="slide" data-note="Arrancamos en el nicho con mayor densidad y disposición a pagar: deporte funcional en Condesa y Roma Norte. El equipo publica sesiones reales desde el día uno. Aliamos 3 boxes a costo cero 90 días — cada gym nos trae 20 usuarios calificados. Etapa 2: campus universitarios y parques clave. Etapa 3: TikTok e Instagram. La ventaja competitiva que nos diferencia de Strava, Meetup o WhatsApp es única: somos la única plataforma con matching por nivel + zona + horario + identidad verificada.">
+  <div class="hdr">
+    <div class="hdr-logos">
+      <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjQwIiB2aWV3Qm94PSIwIDAgMTIwIDQwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgogIDxjaXJjbGUgY3g9IjEyIiBjeT0iMjgiIHI9IjExIiBmaWxsPSIjN0MzQUVEIi8+CiAgPGNpcmNsZSBjeD0iMjIiIGN5PSIxMyIgcj0iOCIgZmlsbD0iIzdDM0FFRCIvPgogIDxjaXJjbGUgY3g9IjUiIGN5PSIxNyIgcj0iNSIgZmlsbD0iIzdDM0FFRCIvPgogIDx0ZXh0IHg9IjMzIiB5PSIzMiIgZm9udC1mYW1pbHk9IlN5bmUsc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9IjgwMCIgZm9udC1zaXplPSIyNiIgZmlsbD0iIzdDM0FFRCI+dG9rdTwvdGV4dD4KICA8dGV4dCB4PSIxMDYiIHk9IjE1IiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiIgZm9udC1zaXplPSIxMiIgZmlsbD0iIzdDM0FFRCI+wq48L3RleHQ+Cjwvc3ZnPg==" class="logo-toku" alt="Toku">
+      <div class="hdr-divider"></div>
+      <svg class="logo-sm-img" viewBox="0 0 210 44" xmlns="http://www.w3.org/2000/svg"><circle cx="18" cy="20" r="9" fill="#84CC16"/><ellipse cx="18" cy="32" rx="7" ry="5" fill="#84CC16"/><circle cx="30" cy="14" r="7" fill="#374151"/><ellipse cx="30" cy="24" rx="6" ry="4" fill="#374151"/><line x1="23" y1="14" x2="24" y2="12" stroke="#FDE047" stroke-width="2" stroke-linecap="round"/><text x="44" y="30" font-family="Syne,sans-serif" font-weight="800" font-size="19" fill="#374151">SPORT</text><text x="113" y="30" font-family="Syne,sans-serif" font-weight="800" font-size="19" fill="#84CC16">MATCH</text></svg>
+    </div>
+    <span class="pill">E3 · GTM + Defensibilidad</span>
+    <div class="badge"><span class="bdot"></span>De la Condesa al mundo</div>
+  </div>
+  <div class="body">
+    <div class="cols">
+      <div class="col-l">
+        <div class="eyebrow">Go-to-market · Condesa → Ciudad → LATAM</div>
+        <div class="gtms"><div class="gn">01</div><div><div class="gt">Condesa + Roma Norte — seed users</div><div class="gd">Mayor densidad de boxes en CDMX. Equipo publica sesiones reales. Mapa activo desde el día 1.</div></div></div>
+        <div class="gtms"><div class="gn">02</div><div><div class="gt">3 boxes CrossFit — cero costo 90 días</div><div class="gd">El box promociona a sus socios. 1 gym = 20 usuarios calificados sin costo de adquisición.</div></div></div>
+        <div class="gtms"><div class="gn">03</div><div><div class="gt">Ibero + Parque México + Chapultepec</div><div class="gd">Embajadores universitarios y activaciones de guerrilla. "¿Siempre corres solo?"</div></div></div>
+        <div class="gtms"><div class="gn">04</div><div><div class="gt">TikTok + Instagram + momento mágico</div><div class="gd">"La app que me consiguió compañera de CrossFit a las 7am." Ese story se comparte solo.</div></div></div>
+      </div>
+      <div class="col-r">
+        <div class="eyebrow" style="margin-bottom:6px">Matriz de defensibilidad</div>
+        <table class="ctable">
+          <thead>
+            <tr><th>Feature</th><th>SportMatch</th><th>Strava</th><th>WhatsApp</th><th>Meetup</th></tr>
+          </thead>
+          <tbody>
+            <tr class="highlight"><td>Matching por nivel</td><td><span class="check">✓</span></td><td><span class="cross">✗</span></td><td><span class="cross">✗</span></td><td><span class="partial">~</span></td></tr>
+            <tr class="highlight"><td>Verificación INE</td><td><span class="check">✓</span></td><td><span class="cross">✗</span></td><td><span class="cross">✗</span></td><td><span class="cross">✗</span></td></tr>
+            <tr class="highlight"><td>Matching por zona</td><td><span class="check">✓</span></td><td><span class="partial">~</span></td><td><span class="cross">✗</span></td><td><span class="partial">~</span></td></tr>
+            <tr><td>Notif. WhatsApp</td><td><span class="check">✓</span></td><td><span class="cross">✗</span></td><td><span class="cross">✗</span></td><td><span class="cross">✗</span></td></tr>
+            <tr><td>B2B para gyms</td><td><span class="check">✓</span></td><td><span class="cross">✗</span></td><td><span class="cross">✗</span></td><td><span class="partial">~</span></td></tr>
+            <tr><td>Rating post-sesión</td><td><span class="check">✓</span></td><td><span class="cross">✗</span></td><td><span class="cross">✗</span></td><td><span class="cross">✗</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ S9 — [E4] EL ASK ══════════ -->
+<div class="slide" data-note="Buscamos 1.5 millones de pesos — 75 mil dólares — para 12 meses de runway. Muy específico sobre a dónde va: 600 mil al producto, la app en React Native, integración INE y WhatsApp. 400 mil a operaciones: equipo inicial y los primeros 10 boxes. 300 mil a marketing: activaciones en parques y redes. 200 mil de reserva. Con ese capital llegamos a cash-flow positivo en el mes 6. Al mes 12 tenemos los números que abren la Serie A: 28 mil usuarios, 1.2 millones al mes, 3 ciudades.">
+  <div class="hdr">
+    <div class="hdr-logos">
+      <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjQwIiB2aWV3Qm94PSIwIDAgMTIwIDQwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgogIDxjaXJjbGUgY3g9IjEyIiBjeT0iMjgiIHI9IjExIiBmaWxsPSIjN0MzQUVEIi8+CiAgPGNpcmNsZSBjeD0iMjIiIGN5PSIxMyIgcj0iOCIgZmlsbD0iIzdDM0FFRCIvPgogIDxjaXJjbGUgY3g9IjUiIGN5PSIxNyIgcj0iNSIgZmlsbD0iIzdDM0FFRCIvPgogIDx0ZXh0IHg9IjMzIiB5PSIzMiIgZm9udC1mYW1pbHk9IlN5bmUsc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9IjgwMCIgZm9udC1zaXplPSIyNiIgZmlsbD0iIzdDM0FFRCI+dG9rdTwvdGV4dD4KICA8dGV4dCB4PSIxMDYiIHk9IjE1IiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiIgZm9udC1zaXplPSIxMiIgZmlsbD0iIzdDM0FFRCI+wq48L3RleHQ+Cjwvc3ZnPg==" class="logo-toku" alt="Toku">
+      <div class="hdr-divider"></div>
+      <svg class="logo-sm-img" viewBox="0 0 210 44" xmlns="http://www.w3.org/2000/svg"><circle cx="18" cy="20" r="9" fill="#84CC16"/><ellipse cx="18" cy="32" rx="7" ry="5" fill="#84CC16"/><circle cx="30" cy="14" r="7" fill="#374151"/><ellipse cx="30" cy="24" rx="6" ry="4" fill="#374151"/><line x1="23" y1="14" x2="24" y2="12" stroke="#FDE047" stroke-width="2" stroke-linecap="round"/><text x="44" y="30" font-family="Syne,sans-serif" font-weight="800" font-size="19" fill="#374151">SPORT</text><text x="113" y="30" font-family="Syne,sans-serif" font-weight="800" font-size="19" fill="#84CC16">MATCH</text></svg>
+    </div>
+    <span class="pill">E4 · El Ask</span>
+    <div class="badge"><span class="bdot"></span>$1.5M MXN · 12 meses runway</div>
+  </div>
+  <div class="body">
+    <div class="cols">
+      <div class="col-l">
+        <div class="eyebrow">Lo que buscamos</div>
+        <div style="font-family:var(--fd);font-size:clamp(28px,4.5vw,52px);color:var(--p);line-height:1;margin:5px 0 2px;font-weight:800">$1.5M</div>
+        <div style="font-size:clamp(10px,1.3vw,15px);color:var(--gray-600);font-weight:500;margin-bottom:9px">MXN · ~$75,000 USD</div>
+        <span style="display:inline-block;background:var(--pl);color:var(--p);border-radius:99px;padding:4px 12px;font-size:clamp(8px,1vw,11px);font-weight:700;font-family:var(--fd);margin-bottom:11px">12 meses de runway</span>
+        <div class="sub">Capital semilla para lanzar, validar el modelo B2B y llegar a cash-flow positivo antes de levantar Serie A.</div>
+        <div style="margin-top:8px;background:var(--gray-50);border:1px solid var(--gray-100);border-radius:10px;padding:clamp(8px,1.3vh,11px) clamp(9px,1.3vw,13px)">
+          <div style="font-size:clamp(7px,0.85vw,10px);font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--gray-400);margin-bottom:4px;font-family:var(--fd)">Hito que desbloquea la Serie A</div>
+          <div style="font-size:clamp(10px,1.2vw,13px);font-weight:600;color:var(--gray-900)">28K usuarios · $1.2M MXN/mes · 3 ciudades</div>
+          <div style="font-size:clamp(7px,0.85vw,10px);color:var(--gray-500);margin-top:2px">Proyectado al mes 12 con este capital</div>
+        </div>
+      </div>
+      <div class="col-r">
+        <div class="brow"><div class="bwrap"><div class="blbl">Producto — App + INE API + WhatsApp <span>$600K · 40%</span></div><div class="bbar"><div class="bfill" style="width:0%;background:var(--p)" data-w="100%"></div></div></div></div>
+        <div class="brow"><div class="bwrap"><div class="blbl">Operaciones — Equipo + 10 boxes <span>$400K · 27%</span></div><div class="bbar"><div class="bfill" style="width:0%;background:var(--g)" data-w="67%"></div></div></div></div>
+        <div class="brow"><div class="bwrap"><div class="blbl">Marketing — Activaciones + redes <span>$300K · 20%</span></div><div class="bbar"><div class="bfill" style="width:0%;background:var(--amber)" data-w="50%"></div></div></div></div>
+        <div class="brow"><div class="bwrap"><div class="blbl">Reserva — Buffer 60 días <span>$200K · 13%</span></div><div class="bbar"><div class="bfill" style="width:0%;background:var(--blue)" data-w="33%"></div></div></div></div>
+        <div style="margin-top:4px">
+          <canvas id="budgetChart" style="width:100%;height:clamp(80px,10vh,110px)"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ S10 — [C] CONCLUSION + ALIANZA TOKU ══════════ -->
+<div class="slide" data-note="El roadmap es claro: mes 1-2 sembramos, 200 sesiones coordinadas. Mes 3 primer evento. Mes 6 cash-flow positivo. Mes 12 Serie A. El KPI que medimos con obsesión no son descargas — son sesiones coordinadas por semana. Pero hay algo más poderoso que solo captar capital: estamos buscando a Toku como socio estratégico de pagos. Cada membresía de gym, cada evento, cada Plan Pro procesado por la API de Toku. No solo organizamos la forma en que la gente entrena — estamos construyendo la infraestructura de recaudación del mercado de salud más grande de LATAM. ¿Entramos?">
+  <div class="hdr">
+    <div class="hdr-logos">
+      <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjQwIiB2aWV3Qm94PSIwIDAgMTIwIDQwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgogIDxjaXJjbGUgY3g9IjEyIiBjeT0iMjgiIHI9IjExIiBmaWxsPSIjN0MzQUVEIi8+CiAgPGNpcmNsZSBjeD0iMjIiIGN5PSIxMyIgcj0iOCIgZmlsbD0iIzdDM0FFRCIvPgogIDxjaXJjbGUgY3g9IjUiIGN5PSIxNyIgcj0iNSIgZmlsbD0iIzdDM0FFRCIvPgogIDx0ZXh0IHg9IjMzIiB5PSIzMiIgZm9udC1mYW1pbHk9IlN5bmUsc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9IjgwMCIgZm9udC1zaXplPSIyNiIgZmlsbD0iIzdDM0FFRCI+dG9rdTwvdGV4dD4KICA8dGV4dCB4PSIxMDYiIHk9IjE1IiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiIgZm9udC1zaXplPSIxMiIgZmlsbD0iIzdDM0FFRCI+wq48L3RleHQ+Cjwvc3ZnPg==" class="logo-toku" alt="Toku">
+      <div class="hdr-divider"></div>
+      <svg class="logo-sm-img" viewBox="0 0 210 44" xmlns="http://www.w3.org/2000/svg"><circle cx="18" cy="20" r="9" fill="#84CC16"/><ellipse cx="18" cy="32" rx="7" ry="5" fill="#84CC16"/><circle cx="30" cy="14" r="7" fill="#374151"/><ellipse cx="30" cy="24" rx="6" ry="4" fill="#374151"/><line x1="23" y1="14" x2="24" y2="12" stroke="#FDE047" stroke-width="2" stroke-linecap="round"/><text x="44" y="30" font-family="Syne,sans-serif" font-weight="800" font-size="19" fill="#374151">SPORT</text><text x="113" y="30" font-family="Syne,sans-serif" font-weight="800" font-size="19" fill="#84CC16">MATCH</text></svg>
+    </div>
+    <span class="pill">C · Conclusion</span>
+    <div class="badge"><span class="bdot"></span>Roadmap + Alianza Toku</div>
+  </div>
+  <div class="body">
+    <div class="cols">
+      <div class="col-l">
+        <div class="eyebrow" style="margin-bottom:7px">Roadmap Año 1</div>
+        <div class="rm"><div class="rm-dot" style="font-size:clamp(6px,0.8vw,9px)">1-2</div><div><div class="rm-mo">Mes 1–2</div><div class="rm-ti">Seed en Condesa / Roma Norte</div><div class="rm-de">10 boxes aliados · 200 sesiones coordinadas · Mapa activo desde el día 1</div></div></div>
+        <div class="rm"><div class="rm-dot">3</div><div><div class="rm-mo">Mes 3</div><div class="rm-ti">Primer evento patrocinado</div><div class="rm-de">CrossFit Abierto · 20 participantes matcheados · $10K primer ingreso</div></div></div>
+        <div class="rm"><div class="rm-dot">6</div><div><div class="rm-mo">Mes 6</div><div class="rm-ti">Cash-flow positivo</div><div class="rm-de">B2B funcionando · 500 usuarios activos · Pagos procesados por Toku</div></div></div>
+        <div class="rm" style="padding-bottom:0"><div class="rm-dot">12</div><div><div class="rm-mo">Mes 12</div><div class="rm-ti">Serie A ready</div><div class="rm-de">28K usuarios · $1.2M MXN/mes · 3 ciudades · Expansión LATAM</div></div></div>
+      </div>
+      <div class="col-r">
+        <div class="kpi"><div class="kpi-l">El KPI que realmente importa</div><div class="kpi-v">200+</div><div class="kpi-s">sesiones coordinadas / semana al mes 2</div></div>
+        <div class="alliance">
+          <div class="allia-title">SportMatch + Toku: infraestructura de recaudación deportiva en LATAM</div>
+          <div class="allia-row"><div class="allia-bullet">1</div><div class="allia-text"><strong>Membresías recurrentes automatizadas:</strong> Toku procesa el cobro mensual de todos los boxes y gyms aliados, eliminando rechazos y cobranza manual.</div></div>
+          <div class="allia-row"><div class="allia-bullet">2</div><div class="allia-text"><strong>Ecosistema transaccional unificado:</strong> Eventos · Drop-ins · Plan Pro · Corporativos — todo procesado por la API de Toku.</div></div>
+          <div class="allia-row"><div class="allia-bullet">3</div><div class="allia-text"><strong>Eficiencia operativa:</strong> Menores costos de transacción para comercios deportivos aliados. Control total de ingresos en un solo dashboard.</div></div>
+        </div>
+        <div class="contact">
+          <div class="contact-cta">No solo organizamos entrenamientos.<br><em>Construimos la infraestructura de pagos del fitness en LATAM. ¿Entramos?</em></div>
+          <div class="clink">🌐 <strong>sportmatch.mx</strong></div>
+          <div class="clink">✉️ <strong>hola@sportmatch.mx</strong></div>
+          <div class="clink">📱 <strong>@SportMatchMX</strong></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /frame -->
+
+<!-- NAV -->
+<div id="nav">
+  <button id="pb" onclick="go(-1)" disabled>← Anterior</button>
+  <div id="dots"></div>
+  <span id="counter">1 / 10</span>
+  <button id="nb" onclick="go(1)">Siguiente →</button>
+  <button id="fsb" onclick="toggleFS()" title="Pantalla completa (F)">⛶ Fullscreen</button>
+</div>
+
+</div><!-- /deck -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script>
+const slides=document.querySelectorAll('.slide');
+const total=slides.length;
+let cur=0;
+const dotsEl=document.getElementById('dots');
+const counterEl=document.getElementById('counter');
+const pb=document.getElementById('pb');
+const nb=document.getElementById('nb');
+
+
+for(let i=0;i<total;i++){
+  const d=document.createElement('button');
+  d.className='db'+(i===0?' on':'');
+  d.onclick=()=>goTo(i);
+  dotsEl.appendChild(d);
+}
+
+function animateBars(slide){
+  slide.querySelectorAll('.bar-fill[data-w],.bfill[data-w]').forEach(el=>{
+    el.style.width='0%';
+    setTimeout(()=>{ el.style.width=el.dataset.w; },80);
+  });
+}
+
+function goTo(n){
+  slides[cur].classList.remove('active');
+  dotsEl.children[cur].classList.remove('on');
+  cur=n;
+  slides[cur].classList.add('active');
+  dotsEl.children[cur].classList.add('on');
+  counterEl.textContent=(cur+1)+' / '+total;
+  pb.disabled=cur===0;
+  nb.disabled=cur===total-1;
+
+  animateBars(slides[cur]);
+  if(cur===5)drawMktChart();
+  if(cur===8)drawBudgetChart();
+}
+
+function go(d){if(cur+d>=0&&cur+d<total)goTo(cur+d);}
+function toggleFS(){
+  if(!document.fullscreenElement){document.documentElement.requestFullscreen().catch(()=>{});}
+  else{document.exitFullscreen();}
+}
+
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key==='ArrowDown'||e.key===' '){e.preventDefault();go(1);}
+  if(e.key==='ArrowLeft'||e.key==='ArrowUp'){e.preventDefault();go(-1);}
+  if(e.key==='f'||e.key==='F')toggleFS();
+});
+
+animateBars(slides[0]);
+
+/* ── CHART: Mercado TAM/SAM/SOM bubble ── */
+let mktDrawn=false;
+function drawMktChart(){
+  if(mktDrawn)return; mktDrawn=true;
+  const canvas=document.getElementById('mktChart');
+  if(!canvas)return;
+  const ctx=canvas.getContext('2d');
+  new Chart(ctx,{
+    type:'bar',
+    data:{
+      labels:['TAM — Mercado Total','SAM — Nicho Funcional CDMX','SOM — Objetivo Año 1'],
+      datasets:[{
+        data:[3000000,280000,28000],
+        backgroundColor:['#EDE9FE','#FEF3C7','#D1FAE5'],
+        borderColor:['#7C3AED','#F59E0B','#059669'],
+        borderWidth:2,
+        borderRadius:6,
+      }]
+    },
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      animation:{duration:900,easing:'easeOutQuart'},
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>' '+ctx.raw.toLocaleString()+' usuarios'}}},
+      scales:{
+        x:{grid:{display:false},ticks:{font:{family:'Syne',size:9},color:'#6B7280'}},
+        y:{display:false,grid:{display:false}}
+      }
+    }
+  });
+}
+
+/* ── CHART: Budget donut ── */
+let budgetDrawn=false;
+function drawBudgetChart(){
+  if(budgetDrawn)return; budgetDrawn=true;
+  const canvas=document.getElementById('budgetChart');
+  if(!canvas)return;
+  const ctx=canvas.getContext('2d');
+  new Chart(ctx,{
+    type:'doughnut',
+    data:{
+      labels:['Producto 40%','Operaciones 27%','Marketing 20%','Reserva 13%'],
+      datasets:[{
+        data:[40,27,20,13],
+        backgroundColor:['#7C3AED','#059669','#F59E0B','#3B82F6'],
+        borderWidth:0,
+        hoverOffset:6,
+      }]
+    },
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      cutout:'65%',
+      animation:{duration:900,easing:'easeOutQuart'},
+      plugins:{
+        legend:{position:'right',labels:{font:{family:'DM Sans',size:9},color:'#4B5563',boxWidth:10,padding:6}},
+        tooltip:{callbacks:{label:ctx=>' '+ctx.label}}
+      }
+    }
+  });
+}
+</script>
+</body>
+</html>
